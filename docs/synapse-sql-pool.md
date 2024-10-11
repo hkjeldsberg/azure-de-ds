@@ -19,12 +19,12 @@ Common use cases of serverless SQL pools are:
 
 Simple command for extracting data from _CSV_ files:
 
-```SQL
+```azure
 SELECT TOP 100 *
 FROM OPENROWSET(
-        BULK 'https://mydatalake.blob.core.windows.net/data/files/*.csv',
-        FORMAT = 'csv',
-        FIRSTROW = 2
+             BULK 'https://mydatalake.blob.core.windows.net/data/files/*.csv',
+             FORMAT = 'csv',
+             FIRSTROW = 2
      ) AS rows
 ```
 
@@ -36,41 +36,38 @@ CREATE EXTERNAL TABLE AS SELECT (CETAS) statement can be used in a dedicated SQL
 the results of a query in an external table, which stores its data in a file in the data lake.
 Example; to create an external data source, run the following command:
 
-```SQL
-CREATE
-EXTERNAL DATA SOURCE files
-WITH (
+```azure
+CREATE EXTERNAL DATA SOURCE files
+    WITH (
     LOCATION = 'https://mydatalake.blob.core.windows.net/data/files/',
     TYPE = HADOOP, -- For dedicated SQL pool
     -- TYPE = BLOB_STORAGE, -- For serverless SQL pool
     CREDENTIAL = storageCred
-);
+    );
 ```
 
 ## Creating external file format
 
 To create an external file format:
 
-```sql
-CREATE
-EXTERNAL FILE FORMAT ParquetFormat
-WITH (
-        FORMAT_TYPE = PARQUET,
-        DATA_COMPRESSION = 'org.apache.hadoop.io.compress.SnappyCodec'
+```azure
+CREATE EXTERNAL FILE FORMAT ParquetFormat
+    WITH (
+    FORMAT_TYPE = PARQUET,
+    DATA_COMPRESSION = 'org.apache.hadoop.io.compress.SnappyCodec'
     );
 ```
 
 ## Full example using `CREATE EXTERNAL TABLE`
 
-```sql
-CREATE
-EXTERNAL TABLE SpecialOrders
+```azure
+CREATE EXTERNAL TABLE SpecialOrders
     WITH (
         -- details for storing results
         LOCATION = 'special_orders/',
         DATA_SOURCE = files,
         FILE_FORMAT = ParquetFormat
-    )
+        )
 AS
 SELECT OrderID, CustomerName, OrderTotal
 FROM OPENROWSET(
@@ -88,36 +85,49 @@ WHERE OrderType = 'Special Order';
 
 To create a stored procedure for data that already exists, use the `CREATE PROCEDURE` command.
 Example:
-```sql
+
+```azure
 CREATE PROCEDURE usp_special_orders_by_year @order_year INT
 AS
 BEGIN
-	-- Drop the table if it already exists
-	IF EXISTS (
-                SELECT * FROM sys.external_tables
-                WHERE name = 'SpecialOrders'
-            )
+    -- Drop the table if it already exists
+    IF EXISTS (SELECT *
+               FROM sys.external_tables
+               WHERE name = 'SpecialOrders')
         DROP EXTERNAL TABLE SpecialOrders
 
-	-- Create external table with special orders
-	-- from the specified year
-	CREATE EXTERNAL TABLE SpecialOrders
-		WITH (
-			LOCATION = 'special_orders/',
-			DATA_SOURCE = files,
-			FILE_FORMAT = ParquetFormat
-		)
-	AS
-	SELECT OrderID, CustomerName, OrderTotal
-	FROM
-		OPENROWSET(
-			BULK 'sales_orders/*.csv',
-			DATA_SOURCE = 'files',
-			FORMAT = 'CSV',
-			PARSER_VERSION = '2.0',
-			HEADER_ROW = TRUE
-		) AS source_data
-	WHERE OrderType = 'Special Order'
-	AND YEAR(OrderDate) = @order_year
+    -- Create external table with special orders
+    -- from the specified year
+    CREATE EXTERNAL TABLE SpecialOrders
+        WITH (
+            LOCATION = 'special_orders/',
+            DATA_SOURCE = files,
+            FILE_FORMAT = ParquetFormat
+            )
+    AS
+    SELECT OrderID, CustomerName, OrderTotal
+    FROM OPENROWSET(
+                 BULK 'sales_orders/*.csv',
+                 DATA_SOURCE = 'files',
+                 FORMAT = 'CSV',
+                 PARSER_VERSION = '2.0',
+                 HEADER_ROW = TRUE
+         ) AS source_data
+    WHERE OrderType = 'Special Order'
+      AND YEAR(OrderDate) = @order_year
 END
 ```
+
+## Query lake database with serverless SQL pool
+
+Using lake database `RetailDB`, query in table `Customer`:
+
+```azure
+USE RetailDB;
+GO
+
+SELECT CustomerID, FirstName, LastName
+FROM Customer
+ORDER BY LastName;
+```
+
