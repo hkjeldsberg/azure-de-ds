@@ -386,6 +386,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-external-file-format">Creating external file format</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#full-example-using-create-external-table">Full example using <code class="docutils literal notranslate"><span class="pre">CREATE</span> <span class="pre">EXTERNAL</span> <span class="pre">TABLE</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-a-data-transformation-precedure">Creating a data transformation precedure</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#query-lake-database-with-serverless-sql-pool">Query lake database with serverless SQL pool</a></li>
 </ul>
             </nav>
         </div>
@@ -418,12 +419,12 @@ clients)</p></li>
 <section id="select-top-100-rows">
 <h2>Select TOP 100 rows:<a class="headerlink" href="#select-top-100-rows" title="Permalink to this heading">#</a></h2>
 <p>Simple command for extracting data from <em>CSV</em> files:</p>
-<div class="highlight-SQL notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">TOP</span><span class="w"> </span><span class="mi">100</span><span class="w"> </span><span class="o">*</span>
-<span class="k">FROM</span><span class="w"> </span><span class="n">OPENROWSET</span><span class="p">(</span>
-<span class="w">        </span><span class="n">BULK</span><span class="w"> </span><span class="s1">&#39;https://mydatalake.blob.core.windows.net/data/files/*.csv&#39;</span><span class="p">,</span>
-<span class="w">        </span><span class="n">FORMAT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;csv&#39;</span><span class="p">,</span>
-<span class="w">        </span><span class="n">FIRSTROW</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span>
-<span class="w">     </span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">rows</span>
+<div class="highlight-azure notranslate"><div class="highlight"><pre><span></span>SELECT TOP 100 *
+FROM OPENROWSET(
+             BULK &#39;https://mydatalake.blob.core.windows.net/data/files/*.csv&#39;,
+             FORMAT = &#39;csv&#39;,
+             FIRSTROW = 2
+     ) AS rows
 </pre></div>
 </div>
 <p>Set header titles with <code class="docutils literal notranslate"><span class="pre">HEADER_ROW=TRUE</span></code> parameter.</p>
@@ -433,50 +434,47 @@ clients)</p></li>
 <p>CREATE EXTERNAL TABLE AS SELECT (CETAS) statement can be used in a dedicated SQL pool or serverless SQL pool to persist
 the results of a query in an external table, which stores its data in a file in the data lake.
 Example; to create an external data source, run the following command:</p>
-<div class="highlight-SQL notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span>
-<span class="k">EXTERNAL</span><span class="w"> </span><span class="k">DATA</span><span class="w"> </span><span class="k">SOURCE</span><span class="w"> </span><span class="n">files</span>
-<span class="k">WITH</span><span class="w"> </span><span class="p">(</span>
-<span class="w">    </span><span class="k">LOCATION</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;https://mydatalake.blob.core.windows.net/data/files/&#39;</span><span class="p">,</span>
-<span class="w">    </span><span class="k">TYPE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">HADOOP</span><span class="p">,</span><span class="w"> </span><span class="c1">-- For dedicated SQL pool</span>
-<span class="w">    </span><span class="c1">-- TYPE = BLOB_STORAGE, -- For serverless SQL pool</span>
-<span class="w">    </span><span class="n">CREDENTIAL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">storageCred</span>
-<span class="p">);</span>
+<div class="highlight-azure notranslate"><div class="highlight"><pre><span></span>CREATE EXTERNAL DATA SOURCE files
+    WITH (
+    LOCATION = &#39;https://mydatalake.blob.core.windows.net/data/files/&#39;,
+    TYPE = HADOOP, -- For dedicated SQL pool
+    -- TYPE = BLOB_STORAGE, -- For serverless SQL pool
+    CREDENTIAL = storageCred
+    );
 </pre></div>
 </div>
 </section>
 <section id="creating-external-file-format">
 <h2>Creating external file format<a class="headerlink" href="#creating-external-file-format" title="Permalink to this heading">#</a></h2>
 <p>To create an external file format:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span>
-<span class="k">EXTERNAL</span><span class="w"> </span><span class="n">FILE</span><span class="w"> </span><span class="n">FORMAT</span><span class="w"> </span><span class="n">ParquetFormat</span>
-<span class="k">WITH</span><span class="w"> </span><span class="p">(</span>
-<span class="w">        </span><span class="n">FORMAT_TYPE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PARQUET</span><span class="p">,</span>
-<span class="w">        </span><span class="n">DATA_COMPRESSION</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;org.apache.hadoop.io.compress.SnappyCodec&#39;</span>
-<span class="w">    </span><span class="p">);</span>
+<div class="highlight-azure notranslate"><div class="highlight"><pre><span></span>CREATE EXTERNAL FILE FORMAT ParquetFormat
+    WITH (
+    FORMAT_TYPE = PARQUET,
+    DATA_COMPRESSION = &#39;org.apache.hadoop.io.compress.SnappyCodec&#39;
+    );
 </pre></div>
 </div>
 </section>
 <section id="full-example-using-create-external-table">
 <h2>Full example using <code class="docutils literal notranslate"><span class="pre">CREATE</span> <span class="pre">EXTERNAL</span> <span class="pre">TABLE</span></code><a class="headerlink" href="#full-example-using-create-external-table" title="Permalink to this heading">#</a></h2>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span>
-<span class="k">EXTERNAL</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">SpecialOrders</span>
-<span class="w">    </span><span class="k">WITH</span><span class="w"> </span><span class="p">(</span>
-<span class="w">        </span><span class="c1">-- details for storing results</span>
-<span class="w">        </span><span class="k">LOCATION</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;special_orders/&#39;</span><span class="p">,</span>
-<span class="w">        </span><span class="n">DATA_SOURCE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">files</span><span class="p">,</span>
-<span class="w">        </span><span class="n">FILE_FORMAT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ParquetFormat</span>
-<span class="w">    </span><span class="p">)</span>
-<span class="k">AS</span>
-<span class="k">SELECT</span><span class="w"> </span><span class="n">OrderID</span><span class="p">,</span><span class="w"> </span><span class="n">CustomerName</span><span class="p">,</span><span class="w"> </span><span class="n">OrderTotal</span>
-<span class="k">FROM</span><span class="w"> </span><span class="n">OPENROWSET</span><span class="p">(</span>
-<span class="w">         </span><span class="c1">-- details for reading source files</span>
-<span class="w">             </span><span class="n">BULK</span><span class="w"> </span><span class="s1">&#39;sales_orders/*.csv&#39;</span><span class="p">,</span>
-<span class="w">             </span><span class="n">DATA_SOURCE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;files&#39;</span><span class="p">,</span>
-<span class="w">             </span><span class="n">FORMAT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;CSV&#39;</span><span class="p">,</span>
-<span class="w">             </span><span class="n">PARSER_VERSION</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;2.0&#39;</span><span class="p">,</span>
-<span class="w">             </span><span class="n">HEADER_ROW</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">TRUE</span>
-<span class="w">     </span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">source_data</span>
-<span class="k">WHERE</span><span class="w"> </span><span class="n">OrderType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Special Order&#39;</span><span class="p">;</span>
+<div class="highlight-azure notranslate"><div class="highlight"><pre><span></span>CREATE EXTERNAL TABLE SpecialOrders
+    WITH (
+        -- details for storing results
+        LOCATION = &#39;special_orders/&#39;,
+        DATA_SOURCE = files,
+        FILE_FORMAT = ParquetFormat
+        )
+AS
+SELECT OrderID, CustomerName, OrderTotal
+FROM OPENROWSET(
+         -- details for reading source files
+             BULK &#39;sales_orders/*.csv&#39;,
+             DATA_SOURCE = &#39;files&#39;,
+             FORMAT = &#39;CSV&#39;,
+             PARSER_VERSION = &#39;2.0&#39;,
+             HEADER_ROW = TRUE
+     ) AS source_data
+WHERE OrderType = &#39;Special Order&#39;;
 </pre></div>
 </div>
 </section>
@@ -484,37 +482,47 @@ Example; to create an external data source, run the following command:</p>
 <h2>Creating a data transformation precedure<a class="headerlink" href="#creating-a-data-transformation-precedure" title="Permalink to this heading">#</a></h2>
 <p>To create a stored procedure for data that already exists, use the <code class="docutils literal notranslate"><span class="pre">CREATE</span> <span class="pre">PROCEDURE</span></code> command.
 Example:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">PROCEDURE</span><span class="w"> </span><span class="n">usp_special_orders_by_year</span><span class="w"> </span><span class="o">@</span><span class="n">order_year</span><span class="w"> </span><span class="nb">INT</span>
-<span class="k">AS</span>
-<span class="k">BEGIN</span>
-<span class="w">	</span><span class="c1">-- Drop the table if it already exists</span>
-<span class="w">	</span><span class="k">IF</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="p">(</span>
-<span class="w">                </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">sys</span><span class="p">.</span><span class="n">external_tables</span>
-<span class="w">                </span><span class="k">WHERE</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;SpecialOrders&#39;</span>
-<span class="w">            </span><span class="p">)</span>
-<span class="w">        </span><span class="k">DROP</span><span class="w"> </span><span class="k">EXTERNAL</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">SpecialOrders</span>
+<div class="highlight-azure notranslate"><div class="highlight"><pre><span></span>CREATE PROCEDURE usp_special_orders_by_year @order_year INT
+AS
+BEGIN
+    -- Drop the table if it already exists
+    IF EXISTS (SELECT *
+               FROM sys.external_tables
+               WHERE name = &#39;SpecialOrders&#39;)
+        DROP EXTERNAL TABLE SpecialOrders
 
-<span class="w">	</span><span class="c1">-- Create external table with special orders</span>
-<span class="w">	</span><span class="c1">-- from the specified year</span>
-<span class="w">	</span><span class="k">CREATE</span><span class="w"> </span><span class="k">EXTERNAL</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">SpecialOrders</span>
-<span class="w">		</span><span class="k">WITH</span><span class="w"> </span><span class="p">(</span>
-<span class="w">			</span><span class="k">LOCATION</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;special_orders/&#39;</span><span class="p">,</span>
-<span class="w">			</span><span class="n">DATA_SOURCE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">files</span><span class="p">,</span>
-<span class="w">			</span><span class="n">FILE_FORMAT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ParquetFormat</span>
-<span class="w">		</span><span class="p">)</span>
-<span class="w">	</span><span class="k">AS</span>
-<span class="w">	</span><span class="k">SELECT</span><span class="w"> </span><span class="n">OrderID</span><span class="p">,</span><span class="w"> </span><span class="n">CustomerName</span><span class="p">,</span><span class="w"> </span><span class="n">OrderTotal</span>
-<span class="w">	</span><span class="k">FROM</span>
-<span class="w">		</span><span class="n">OPENROWSET</span><span class="p">(</span>
-<span class="w">			</span><span class="n">BULK</span><span class="w"> </span><span class="s1">&#39;sales_orders/*.csv&#39;</span><span class="p">,</span>
-<span class="w">			</span><span class="n">DATA_SOURCE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;files&#39;</span><span class="p">,</span>
-<span class="w">			</span><span class="n">FORMAT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;CSV&#39;</span><span class="p">,</span>
-<span class="w">			</span><span class="n">PARSER_VERSION</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;2.0&#39;</span><span class="p">,</span>
-<span class="w">			</span><span class="n">HEADER_ROW</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">TRUE</span>
-<span class="w">		</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">source_data</span>
-<span class="w">	</span><span class="k">WHERE</span><span class="w"> </span><span class="n">OrderType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Special Order&#39;</span>
-<span class="w">	</span><span class="k">AND</span><span class="w"> </span><span class="k">YEAR</span><span class="p">(</span><span class="n">OrderDate</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">@</span><span class="n">order_year</span>
-<span class="k">END</span>
+    -- Create external table with special orders
+    -- from the specified year
+    CREATE EXTERNAL TABLE SpecialOrders
+        WITH (
+            LOCATION = &#39;special_orders/&#39;,
+            DATA_SOURCE = files,
+            FILE_FORMAT = ParquetFormat
+            )
+    AS
+    SELECT OrderID, CustomerName, OrderTotal
+    FROM OPENROWSET(
+                 BULK &#39;sales_orders/*.csv&#39;,
+                 DATA_SOURCE = &#39;files&#39;,
+                 FORMAT = &#39;CSV&#39;,
+                 PARSER_VERSION = &#39;2.0&#39;,
+                 HEADER_ROW = TRUE
+         ) AS source_data
+    WHERE OrderType = &#39;Special Order&#39;
+      AND YEAR(OrderDate) = @order_year
+END
+</pre></div>
+</div>
+</section>
+<section id="query-lake-database-with-serverless-sql-pool">
+<h2>Query lake database with serverless SQL pool<a class="headerlink" href="#query-lake-database-with-serverless-sql-pool" title="Permalink to this heading">#</a></h2>
+<p>Using lake database <code class="docutils literal notranslate"><span class="pre">RetailDB</span></code>, query in table <code class="docutils literal notranslate"><span class="pre">Customer</span></code>:</p>
+<div class="highlight-azure notranslate"><div class="highlight"><pre><span></span>USE RetailDB;
+GO
+
+SELECT CustomerID, FirstName, LastName
+FROM Customer
+ORDER BY LastName;
 </pre></div>
 </div>
 </section>
@@ -581,6 +589,7 @@ Example:</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-external-file-format">Creating external file format</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#full-example-using-create-external-table">Full example using <code class="docutils literal notranslate"><span class="pre">CREATE</span> <span class="pre">EXTERNAL</span> <span class="pre">TABLE</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-a-data-transformation-precedure">Creating a data transformation precedure</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#query-lake-database-with-serverless-sql-pool">Query lake database with serverless SQL pool</a></li>
 </ul>
   </nav></div>
 
