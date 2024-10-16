@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Azure Documentation &#8212; Azure Data Engineer/Scientist docs</title>
+    <title>Data visualization in Spark &#8212; Azure Data Engineer/Scientist docs</title>
   
   
   
@@ -59,10 +59,10 @@
     <script src="_static/design-tabs.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'spark_viz';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Azure Data Engineer Fundamentals" href="de-commands.html" />
+    <link rel="prev" title="Analyze data with Spark" href="spark_analyze.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
     <meta name="docbuild:last-update" content="Oct 16, 2024"/>
@@ -126,8 +126,6 @@
       
       
       
-        
-      
       <div class="bd-sidebar-primary bd-sidebar">
         
 
@@ -146,7 +144,7 @@
     
   
 
-<a class="navbar-brand logo" href="#">
+<a class="navbar-brand logo" href="index.html">
   
   
   
@@ -177,8 +175,8 @@
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
-            <li class="toctree-l1 current active">
-                <a class="reference internal" href="#">
+            <li class="toctree-l1">
+                <a class="reference internal" href="index.html">
                     Azure Documentation
                 </a>
             </li>
@@ -190,10 +188,10 @@
 <li class="toctree-l1"><a class="reference internal" href="auth.html">Authentication in Azure Synapse</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Apache Spark</span></p>
-<ul class="nav bd-sidenav">
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="spark.html">Introduction to Apache Spark</a></li>
 <li class="toctree-l1"><a class="reference internal" href="spark_analyze.html">Analyze data with Spark</a></li>
-<li class="toctree-l1"><a class="reference internal" href="spark_viz.html">Data visualization in Spark</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Data visualization in Spark</a></li>
 </ul>
 
     </div>
@@ -265,7 +263,7 @@
       
       
       
-      <li><a href="https://github.com/hkjeldsberg/azure-de-ds/issues/new?title=Issue%20on%20page%20%2Findex.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/hkjeldsberg/azure-de-ds/issues/new?title=Issue%20on%20page%20%2Fspark_viz.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -295,7 +293,7 @@
       
       
       
-      <li><a href="_sources/index.md" target="_blank"
+      <li><a href="_sources/spark_viz.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -379,7 +377,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Azure Documentation</h1>
+    <h1>Data visualization in Spark</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -389,9 +387,7 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contents">Contents</a><ul class="nav section-nav flex-column">
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-matplotlib-in-code">Using <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> in code</a></li>
 </ul>
             </nav>
         </div>
@@ -403,27 +399,36 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="azure-documentation">
-<h1>Azure Documentation<a class="headerlink" href="#azure-documentation" title="Permalink to this heading">#</a></h1>
-<p>This documentation contains information related to Azure’s Data Engineer and Data Scientist Career paths.</p>
-<section id="contents">
-<h2>Contents<a class="headerlink" href="#contents" title="Permalink to this heading">#</a></h2>
-<div class="toctree-wrapper compound">
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Azure Data Engineer</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="de-commands.html">Azure Data Engineer Fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="synapse-sql-pool.html">Azure Synapse serverless SQL pool</a></li>
-<li class="toctree-l1"><a class="reference internal" href="auth.html">Authentication in Azure Synapse</a></li>
-</ul>
+  <section class="tex2jax_ignore mathjax_ignore" id="data-visualization-in-spark">
+<h1>Data visualization in Spark<a class="headerlink" href="#data-visualization-in-spark" title="Permalink to this heading">#</a></h1>
+<p>When displaying a dataframe or running a SQL query in the Spark notebook, the results are displayed by default as a *
+<em>table</em>*.
+Alternatively, change the results view to a <strong>chart</strong> and adjust the properties to visualize the data.</p>
+<section id="using-matplotlib-in-code">
+<h2>Using <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> in code<a class="headerlink" href="#using-matplotlib-in-code" title="Permalink to this heading">#</a></h2>
+<p>An alternative to using the embedded Notebook visualization, you can use a Python visualization package such as
+<code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> or <code class="docutils literal notranslate"><span class="pre">Seaborn</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+
+<span class="c1"># Get the data as a Pandas dataframe</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s2">&quot;SELECT Category, COUNT(ProductID) AS ProductCount </span><span class="se">\</span>
+<span class="s2">                  FROM products </span><span class="se">\</span>
+<span class="s2">                  GROUP BY Category </span><span class="se">\</span>
+<span class="s2">                  ORDER BY Category&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+
+<span class="c1"># Bar chart</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;Category&#39;</span><span class="p">],</span> <span class="n">height</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;ProductCount&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;orange&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Product Counts by Category&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Category&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Products&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;#95a5a6&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="mi">70</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
 </div>
-<div class="toctree-wrapper compound">
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Apache Spark</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="spark.html">Introduction to Apache Spark</a></li>
-<li class="toctree-l1"><a class="reference internal" href="spark_analyze.html">Analyze data with Spark</a></li>
-<li class="toctree-l1"><a class="reference internal" href="spark_viz.html">Data visualization in Spark</a></li>
-</ul>
-</div>
+<p>Note that matplotlib requires a <code class="docutils literal notranslate"><span class="pre">Pandas</span></code> dataframe, which a <code class="docutils literal notranslate"><span class="pre">Spark</span></code> dataframe can be converted to using <code class="docutils literal notranslate"><span class="pre">.toPandas()</span></code>.</p>
 </section>
 </section>
 
@@ -457,14 +462,14 @@ document.write(`
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
-    <a class="right-next"
-       href="de-commands.html"
-       title="next page">
+    <a class="left-prev"
+       href="spark_analyze.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Azure Data Engineer Fundamentals</p>
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Analyze data with Spark</p>
       </div>
-      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>
@@ -482,9 +487,7 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contents">Contents</a><ul class="nav section-nav flex-column">
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-matplotlib-in-code">Using <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> in code</a></li>
 </ul>
   </nav></div>
 

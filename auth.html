@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Azure Documentation &#8212; Azure Data Engineer/Scientist docs</title>
+    <title>Authentication in Azure Synapse &#8212; Azure Data Engineer/Scientist docs</title>
   
   
   
@@ -59,10 +59,11 @@
     <script src="_static/design-tabs.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'auth';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Azure Data Engineer Fundamentals" href="de-commands.html" />
+    <link rel="next" title="Introduction to Apache Spark" href="spark.html" />
+    <link rel="prev" title="Azure Synapse serverless SQL pool" href="synapse-sql-pool.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
     <meta name="docbuild:last-update" content="Oct 16, 2024"/>
@@ -126,8 +127,6 @@
       
       
       
-        
-      
       <div class="bd-sidebar-primary bd-sidebar">
         
 
@@ -146,7 +145,7 @@
     
   
 
-<a class="navbar-brand logo" href="#">
+<a class="navbar-brand logo" href="index.html">
   
   
   
@@ -177,17 +176,17 @@
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
-            <li class="toctree-l1 current active">
-                <a class="reference internal" href="#">
+            <li class="toctree-l1">
+                <a class="reference internal" href="index.html">
                     Azure Documentation
                 </a>
             </li>
         </ul>
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Azure Data Engineer</span></p>
-<ul class="nav bd-sidenav">
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="de-commands.html">Azure Data Engineer Fundamentals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="synapse-sql-pool.html">Azure Synapse serverless SQL pool</a></li>
-<li class="toctree-l1"><a class="reference internal" href="auth.html">Authentication in Azure Synapse</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Authentication in Azure Synapse</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Apache Spark</span></p>
 <ul class="nav bd-sidenav">
@@ -265,7 +264,7 @@
       
       
       
-      <li><a href="https://github.com/hkjeldsberg/azure-de-ds/issues/new?title=Issue%20on%20page%20%2Findex.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/hkjeldsberg/azure-de-ds/issues/new?title=Issue%20on%20page%20%2Fauth.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -295,7 +294,7 @@
       
       
       
-      <li><a href="_sources/index.md" target="_blank"
+      <li><a href="_sources/auth.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -379,7 +378,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Azure Documentation</h1>
+    <h1>Authentication in Azure Synapse</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -389,9 +388,9 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contents">Contents</a><ul class="nav section-nav flex-column">
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#authorization-within-a-serverless-sql-pool">Authorization within a serverless SQL pool</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#access-to-storage-accounts">Access to storage accounts</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#azure-access">Azure access</a></li>
 </ul>
             </nav>
         </div>
@@ -403,27 +402,34 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="azure-documentation">
-<h1>Azure Documentation<a class="headerlink" href="#azure-documentation" title="Permalink to this heading">#</a></h1>
-<p>This documentation contains information related to Azure’s Data Engineer and Data Scientist Career paths.</p>
-<section id="contents">
-<h2>Contents<a class="headerlink" href="#contents" title="Permalink to this heading">#</a></h2>
-<div class="toctree-wrapper compound">
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Azure Data Engineer</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="de-commands.html">Azure Data Engineer Fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="synapse-sql-pool.html">Azure Synapse serverless SQL pool</a></li>
-<li class="toctree-l1"><a class="reference internal" href="auth.html">Authentication in Azure Synapse</a></li>
+  <section class="tex2jax_ignore mathjax_ignore" id="authentication-in-azure-synapse">
+<h1>Authentication in Azure Synapse<a class="headerlink" href="#authentication-in-azure-synapse" title="Permalink to this heading">#</a></h1>
+<p>Two types of authentication are supported for serverless SQL pools:</p>
+<ul class="simple">
+<li><p>SQL Authentication (username, password)</p></li>
+<li><p>Microsoft Entra authentication</p></li>
 </ul>
-</div>
-<div class="toctree-wrapper compound">
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Apache Spark</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="spark.html">Introduction to Apache Spark</a></li>
-<li class="toctree-l1"><a class="reference internal" href="spark_analyze.html">Analyze data with Spark</a></li>
-<li class="toctree-l1"><a class="reference internal" href="spark_viz.html">Data visualization in Spark</a></li>
+<section id="authorization-within-a-serverless-sql-pool">
+<h2>Authorization within a serverless SQL pool<a class="headerlink" href="#authorization-within-a-serverless-sql-pool" title="Permalink to this heading">#</a></h2>
+<p>With SQL authentication, the user exists only in the serverless SQL pool. With Microsoft Entra, the user can sign in to
+a serverless SQL pool <strong>and</strong> other services.</p>
+</section>
+<section id="access-to-storage-accounts">
+<h2>Access to storage accounts<a class="headerlink" href="#access-to-storage-accounts" title="Permalink to this heading">#</a></h2>
+<p>A user can be authorized to access and query files in Azure Storage. Serverless SQL pools supports following
+authorization types, all of which are supported by Microsoft Entra:</p>
+<ul class="simple">
+<li><p>Anonymous access</p></li>
+<li><p>Shared access signature (SAS, SQL user supported)</p></li>
+<li><p>Managed Identity</p></li>
+<li><p>User Identity</p></li>
 </ul>
-</div>
+<p>To give admin privileges to a user in Synapse, select the <em>Synapse Administrator</em> role within <code class="docutils literal notranslate"><span class="pre">Access</span> <span class="pre">control</span></code>.</p>
+</section>
+<section id="azure-access">
+<h2>Azure access<a class="headerlink" href="#azure-access" title="Permalink to this heading">#</a></h2>
+<p>Assign roles of type <em>Reader</em> for users with <strong>read</strong> only access, and <em>Contributor</em> for users which need <strong>read/write</strong>
+access. E.g. when users need to creat external tables as select (CETAS).</p>
 </section>
 </section>
 
@@ -457,12 +463,21 @@ document.write(`
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="synapse-sql-pool.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Azure Synapse serverless SQL pool</p>
+      </div>
+    </a>
     <a class="right-next"
-       href="de-commands.html"
+       href="spark.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Azure Data Engineer Fundamentals</p>
+        <p class="prev-next-title">Introduction to Apache Spark</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -482,9 +497,9 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contents">Contents</a><ul class="nav section-nav flex-column">
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#authorization-within-a-serverless-sql-pool">Authorization within a serverless SQL pool</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#access-to-storage-accounts">Access to storage accounts</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#azure-access">Azure access</a></li>
 </ul>
   </nav></div>
 
