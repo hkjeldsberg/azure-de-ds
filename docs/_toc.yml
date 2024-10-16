@@ -9,4 +9,12 @@ parts:
     chapters:
       - file: de-commands
       - file: synapse-sql-pool
+      - file: auth
+
+  - caption: Apache Spark
+    chapters:
+      - file: spark
+      - file: spark_analyze
+      - file: spark_viz
+
 
