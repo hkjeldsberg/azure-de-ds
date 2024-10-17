@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Azure Documentation &#8212; Azure Data Engineer/Scientist docs</title>
+    <title>Azure CLI with ML &#8212; Azure Data Engineer/Scientist docs</title>
   
   
   
@@ -59,10 +59,10 @@
     <script src="_static/design-tabs.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'ds-cli';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Azure Data Engineer Fundamentals" href="de-commands.html" />
+    <link rel="prev" title="Azure ML Python SDK" href="ds-python.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
     <meta name="docbuild:last-update" content="Oct 17, 2024"/>
@@ -126,8 +126,6 @@
       
       
       
-        
-      
       <div class="bd-sidebar-primary bd-sidebar">
         
 
@@ -146,7 +144,7 @@
     
   
 
-<a class="navbar-brand logo" href="#">
+<a class="navbar-brand logo" href="index.html">
   
   
   
@@ -177,8 +175,8 @@
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
-            <li class="toctree-l1 current active">
-                <a class="reference internal" href="#">
+            <li class="toctree-l1">
+                <a class="reference internal" href="index.html">
                     Azure Documentation
                 </a>
             </li>
@@ -196,10 +194,10 @@
 <li class="toctree-l1"><a class="reference internal" href="spark_viz.html">Data visualization in Spark</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Azure Data Scientist</span></p>
-<ul class="nav bd-sidenav">
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="ds-commands.html">Introduction to Azure Machine Learning (ML)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ds-python.html">Azure ML Python SDK</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ds-cli.html">Azure CLI with ML</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Azure CLI with ML</a></li>
 </ul>
 
     </div>
@@ -271,7 +269,7 @@
       
       
       
-      <li><a href="https://github.com/hkjeldsberg/azure-de-ds/issues/new?title=Issue%20on%20page%20%2Findex.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/hkjeldsberg/azure-de-ds/issues/new?title=Issue%20on%20page%20%2Fds-cli.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -301,7 +299,7 @@
       
       
       
-      <li><a href="_sources/index.md" target="_blank"
+      <li><a href="_sources/ds-cli.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -385,7 +383,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Azure Documentation</h1>
+    <h1>Azure CLI with ML</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -395,9 +393,8 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contents">Contents</a><ul class="nav section-nav flex-column">
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#help-with-cli-commands">Help with CLI commands</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#working-with-azure-ml-from-the-cli">Working with Azure ML from the CLI</a></li>
 </ul>
             </nav>
         </div>
@@ -409,34 +406,37 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="azure-documentation">
-<h1>Azure Documentation<a class="headerlink" href="#azure-documentation" title="Permalink to this heading">#</a></h1>
-<p>This documentation contains information related to Azure’s Data Engineer and Data Scientist Career paths.</p>
-<section id="contents">
-<h2>Contents<a class="headerlink" href="#contents" title="Permalink to this heading">#</a></h2>
-<div class="toctree-wrapper compound">
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Azure Data Engineer</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="de-commands.html">Azure Data Engineer Fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="synapse-sql-pool.html">Azure Synapse serverless SQL pool</a></li>
-<li class="toctree-l1"><a class="reference internal" href="auth.html">Authentication in Azure Synapse</a></li>
-</ul>
+  <section class="tex2jax_ignore mathjax_ignore" id="azure-cli-with-ml">
+<h1>Azure CLI with ML<a class="headerlink" href="#azure-cli-with-ml" title="Permalink to this heading">#</a></h1>
+<p>Install Azure ML using the <code class="docutils literal notranslate"><span class="pre">ml</span></code> extension as follows:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>az<span class="w"> </span>extension<span class="w"> </span>add<span class="w"> </span>-n<span class="w"> </span>ml<span class="w"> </span>-y
+</pre></div>
 </div>
-<div class="toctree-wrapper compound">
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Apache Spark</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="spark.html">Introduction to Apache Spark</a></li>
-<li class="toctree-l1"><a class="reference internal" href="spark_analyze.html">Analyze data with Spark</a></li>
-<li class="toctree-l1"><a class="reference internal" href="spark_viz.html">Data visualization in Spark</a></li>
-</ul>
+<section id="help-with-cli-commands">
+<h2>Help with CLI commands<a class="headerlink" href="#help-with-cli-commands" title="Permalink to this heading">#</a></h2>
+<p>To show a list of commands, use the <code class="docutils literal notranslate"><span class="pre">-h</span></code> flag:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>az<span class="w"> </span>ml<span class="w"> </span>-h
+</pre></div>
 </div>
-<div class="toctree-wrapper compound">
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Azure Data Scientist</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="ds-commands.html">Introduction to Azure Machine Learning (ML)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ds-python.html">Azure ML Python SDK</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ds-cli.html">Azure CLI with ML</a></li>
-</ul>
+</section>
+<section id="working-with-azure-ml-from-the-cli">
+<h2>Working with Azure ML from the CLI<a class="headerlink" href="#working-with-azure-ml-from-the-cli" title="Permalink to this heading">#</a></h2>
+<p>For example, to create a compute target, you can use the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>az<span class="w"> </span>ml<span class="w"> </span>compute<span class="w"> </span>create<span class="w"> </span>--name<span class="w"> </span>aml-cluster<span class="w"> </span>--size<span class="w"> </span>STANDARD_DS3_v2<span class="w"> </span>--min-instances<span class="w"> </span><span class="m">0</span><span class="w"> </span>--max-instances<span class="w"> </span><span class="m">5</span><span class="w"> </span>--type<span class="w"> </span>AmlCompute<span class="w"> </span>--resource-group<span class="w"> </span>my-resource-group<span class="w"> </span>--workspace-name<span class="w"> </span>my-workspace
+</pre></div>
+</div>
+<p>Alternative, put configuration inside a YAML file:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">$schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://azuremlschemas.azureedge.net/latest/amlCompute.schema.json</span>
+<span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">aml-cluster</span>
+<span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">amlcompute</span>
+<span class="nt">size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">STANDARD_DS3_v2</span>
+<span class="nt">min_instances</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+<span class="nt">max_instances</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+</pre></div>
+</div>
+<p>and run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>az<span class="w"> </span>ml<span class="w"> </span>compute<span class="w"> </span>create<span class="w"> </span>--file<span class="w"> </span>compute.yml<span class="w"> </span>--resource-group<span class="w"> </span>my-resource-group<span class="w"> </span>--workspace-name<span class="w"> </span>my-workspace
+</pre></div>
 </div>
 </section>
 </section>
@@ -471,14 +471,14 @@ document.write(`
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
-    <a class="right-next"
-       href="de-commands.html"
-       title="next page">
+    <a class="left-prev"
+       href="ds-python.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Azure Data Engineer Fundamentals</p>
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Azure ML Python SDK</p>
       </div>
-      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>
@@ -496,9 +496,8 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contents">Contents</a><ul class="nav section-nav flex-column">
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#help-with-cli-commands">Help with CLI commands</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#working-with-azure-ml-from-the-cli">Working with Azure ML from the CLI</a></li>
 </ul>
   </nav></div>
 
