@@ -124,6 +124,7 @@ dated_df.write.partitionBy("Year").mode("overwrite").parquet("/data")
 ```
 
 This results in the following folder name partitioning:
+
 ![Partitioned file](partition.png)
 
 ### Filter Parquet files

@@ -17,4 +17,8 @@ parts:
       - file: spark_analyze
       - file: spark_viz
 
-
+  - caption: Azure Data Scientist
+    chapters:
+      - file: ds-commands
+      - file: ds-python
+      - file: ds-cli

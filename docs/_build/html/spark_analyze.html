@@ -192,6 +192,12 @@
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Analyze data with Spark</a></li>
 <li class="toctree-l1"><a class="reference internal" href="spark_viz.html">Data visualization in Spark</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Azure Data Scientist</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="ds-commands.html">Introduction to Azure Machine Learning (ML)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ds-python.html">Azure ML Python SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ds-cli.html">Azure CLI with ML</a></li>
+</ul>
 
     </div>
 </nav></div>
@@ -522,8 +528,8 @@ To query data with <code class="docutils literal notranslate"><span class="pre">
 <span class="n">dated_df</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">partitionBy</span><span class="p">(</span><span class="s2">&quot;Year&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mode</span><span class="p">(</span><span class="s2">&quot;overwrite&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="s2">&quot;/data&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>This results in the following folder name partitioning:
-<img alt="Partitioned file" src="_images/partition.png" /></p>
+<p>This results in the following folder name partitioning:</p>
+<p><img alt="Partitioned file" src="_images/partition.png" /></p>
 </section>
 <section id="filter-parquet-files">
 <h3>Filter Parquet files<a class="headerlink" href="#filter-parquet-files" title="Link to this heading">#</a></h3>
