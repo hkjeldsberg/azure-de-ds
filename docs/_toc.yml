@@ -22,3 +22,5 @@ parts:
       - file: ds-commands
       - file: ds-python
       - file: ds-cli
+      - file: ds-data
+      - file: ds-compute
