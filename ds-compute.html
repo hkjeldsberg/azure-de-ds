@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Authentication in Azure Synapse &#8212; Azure Data Engineer/Scientist docs</title>
+    <title>Compute targets on Azure ML &#8212; Azure Data Engineer/Scientist docs</title>
   
   
   
@@ -59,11 +59,10 @@
     <script src="_static/design-tabs.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'auth';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'ds-compute';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Introduction to Apache Spark" href="spark.html" />
-    <link rel="prev" title="Azure Synapse serverless SQL pool" href="synapse-sql-pool.html" />
+    <link rel="prev" title="Data storage in Azure ML" href="ds-data.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
     <meta name="docbuild:last-update" content="Oct 25, 2024"/>
@@ -183,10 +182,10 @@
             </li>
         </ul>
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Azure Data Engineer</span></p>
-<ul class="current nav bd-sidenav">
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="de-commands.html">Azure Data Engineer Fundamentals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="synapse-sql-pool.html">Azure Synapse serverless SQL pool</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Authentication in Azure Synapse</a></li>
+<li class="toctree-l1"><a class="reference internal" href="auth.html">Authentication in Azure Synapse</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Apache Spark</span></p>
 <ul class="nav bd-sidenav">
@@ -195,12 +194,12 @@
 <li class="toctree-l1"><a class="reference internal" href="spark_viz.html">Data visualization in Spark</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Azure Data Scientist</span></p>
-<ul class="nav bd-sidenav">
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="ds-commands.html">Introduction to Azure Machine Learning (ML)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ds-python.html">Azure ML Python SDK</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ds-cli.html">Azure CLI with ML</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ds-data.html">Data storage in Azure ML</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ds-compute.html">Compute targets on Azure ML</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Compute targets on Azure ML</a></li>
 </ul>
 
     </div>
@@ -272,7 +271,7 @@
       
       
       
-      <li><a href="https://github.com/hkjeldsberg/azure-de-ds/issues/new?title=Issue%20on%20page%20%2Fauth.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/hkjeldsberg/azure-de-ds/issues/new?title=Issue%20on%20page%20%2Fds-compute.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -302,7 +301,7 @@
       
       
       
-      <li><a href="_sources/auth.md" target="_blank"
+      <li><a href="_sources/ds-compute.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -386,7 +385,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Authentication in Azure Synapse</h1>
+    <h1>Compute targets on Azure ML</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -396,9 +395,8 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#authorization-within-a-serverless-sql-pool">Authorization within a serverless SQL pool</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#access-to-storage-accounts">Access to storage accounts</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#azure-access">Azure access</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#types-of-compute-targets">Types of compute targets</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-a-compute-instance">Creating a compute instance</a></li>
 </ul>
             </nav>
         </div>
@@ -410,34 +408,34 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="authentication-in-azure-synapse">
-<h1>Authentication in Azure Synapse<a class="headerlink" href="#authentication-in-azure-synapse" title="Permalink to this heading">#</a></h1>
-<p>Two types of authentication are supported for serverless SQL pools:</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="compute-targets-on-azure-ml">
+<h1>Compute targets on Azure ML<a class="headerlink" href="#compute-targets-on-azure-ml" title="Permalink to this heading">#</a></h1>
+<p>Compute targets are physical or virtual computers on which jobs are run.</p>
+<section id="types-of-compute-targets">
+<h2>Types of compute targets<a class="headerlink" href="#types-of-compute-targets" title="Permalink to this heading">#</a></h2>
+<p>The following types of compute are available on Azure ML:</p>
 <ul class="simple">
-<li><p>SQL Authentication (username, password)</p></li>
-<li><p>Microsoft Entra authentication</p></li>
+<li><p>Compute instance: Notebook friendly</p></li>
+<li><p>Compute clusters: Ideal for training models and processing in parallel, and for production (scales automatically)</p></li>
+<li><p>Kubernetes clusters: Gives more control over how the compute is configured and managed</p></li>
+<li><p>Attached compute: Attach existing compute (Azure VM, Azure Databricks)</p></li>
+<li><p>Serverless compute: On-demand compute for training jobs</p></li>
 </ul>
-<section id="authorization-within-a-serverless-sql-pool">
-<h2>Authorization within a serverless SQL pool<a class="headerlink" href="#authorization-within-a-serverless-sql-pool" title="Permalink to this heading">#</a></h2>
-<p>With SQL authentication, the user exists only in the serverless SQL pool. With Microsoft Entra, the user can sign in to
-a serverless SQL pool <strong>and</strong> other services.</p>
 </section>
-<section id="access-to-storage-accounts">
-<h2>Access to storage accounts<a class="headerlink" href="#access-to-storage-accounts" title="Permalink to this heading">#</a></h2>
-<p>A user can be authorized to access and query files in Azure Storage. Serverless SQL pools supports following
-authorization types, all of which are supported by Microsoft Entra:</p>
-<ul class="simple">
-<li><p>Anonymous access</p></li>
-<li><p>Shared access signature (SAS, SQL user supported)</p></li>
-<li><p>Managed Identity</p></li>
-<li><p>User Identity</p></li>
-</ul>
-<p>To give admin privileges to a user in Synapse, select the <em>Synapse Administrator</em> role within <code class="docutils literal notranslate"><span class="pre">Access</span> <span class="pre">control</span></code>.</p>
-</section>
-<section id="azure-access">
-<h2>Azure access<a class="headerlink" href="#azure-access" title="Permalink to this heading">#</a></h2>
-<p>Assign roles of type <em>Reader</em> for users with <strong>read</strong> only access, and <em>Contributor</em> for users which need <strong>read/write</strong>
-access. E.g. when users need to creat external tables as select (CETAS).</p>
+<section id="creating-a-compute-instance">
+<h2>Creating a compute instance<a class="headerlink" href="#creating-a-compute-instance" title="Permalink to this heading">#</a></h2>
+<p>To create a compute instance with Python SDK:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">azure.ai.ml.entities</span> <span class="kn">import</span> <span class="n">ComputeInstance</span>
+
+<span class="n">ci_basic_name</span> <span class="o">=</span> <span class="s2">&quot;basic-ci-12345&quot;</span>
+<span class="n">ci_basic</span> <span class="o">=</span> <span class="n">ComputeInstance</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="n">ci_basic_name</span><span class="p">,</span>
+    <span class="n">size</span><span class="o">=</span><span class="s2">&quot;STANDARD_DS3_v2&quot;</span>
+<span class="p">)</span>
+<span class="n">ml_client</span><span class="o">.</span><span class="n">begin_create_or_update</span><span class="p">(</span><span class="n">ci_basic</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Note that a compute instance can only be assigned to <em>one</em> user.</p>
 </section>
 </section>
 
@@ -472,22 +470,13 @@ access. E.g. when users need to creat external tables as select (CETAS).</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="synapse-sql-pool.html"
+       href="ds-data.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Azure Synapse serverless SQL pool</p>
+        <p class="prev-next-title">Data storage in Azure ML</p>
       </div>
-    </a>
-    <a class="right-next"
-       href="spark.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Introduction to Apache Spark</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>
@@ -505,9 +494,8 @@ access. E.g. when users need to creat external tables as select (CETAS).</p>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#authorization-within-a-serverless-sql-pool">Authorization within a serverless SQL pool</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#access-to-storage-accounts">Access to storage accounts</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#azure-access">Azure access</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#types-of-compute-targets">Types of compute targets</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-a-compute-instance">Creating a compute instance</a></li>
 </ul>
   </nav></div>
 
