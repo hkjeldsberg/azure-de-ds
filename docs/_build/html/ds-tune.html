@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Azure Documentation &#8212; Azure Data Engineer/Scientist docs</title>
+    <title>Tuning hyperparameters &#8212; Azure Data Engineer/Scientist docs</title>
   
   
   
@@ -57,10 +57,11 @@
     <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'ds-tune';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Azure Data Engineer Fundamentals" href="de-commands.html" />
+    <link rel="next" title="Pipelines in Azure ML" href="ds-pipelines.html" />
+    <link rel="prev" title="Track model training in Jupyter notebooks" href="ds-track.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
     <meta name="docbuild:last-update" content="Nov 18, 2024"/>
@@ -124,8 +125,6 @@
       
       
       
-        
-      
       <div class="bd-sidebar-primary bd-sidebar">
         
 
@@ -144,7 +143,7 @@
     
   
 
-<a class="navbar-brand logo" href="#">
+<a class="navbar-brand logo" href="index.html">
   
   
   
@@ -175,8 +174,8 @@
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
-            <li class="toctree-l1 current active">
-                <a class="reference internal" href="#">
+            <li class="toctree-l1">
+                <a class="reference internal" href="index.html">
                     Azure Documentation
                 </a>
             </li>
@@ -194,7 +193,7 @@
 <li class="toctree-l1"><a class="reference internal" href="spark_viz.html">Data visualization in Spark</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Azure Data Scientist</span></p>
-<ul class="nav bd-sidenav">
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="ds-commands.html">Introduction to Azure Machine Learning (ML)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ds-python.html">Azure ML Python SDK</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ds-cli.html">Azure CLI with ML</a></li>
@@ -204,7 +203,7 @@
 <li class="toctree-l1"><a class="reference internal" href="ds-env.html">Environments in Azure ML</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ds-model.html">Finding the “best” model by using AutoML</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ds-track.html">Track model training in Jupyter notebooks</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ds-tune.html">Tuning hyperparameters</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Tuning hyperparameters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ds-pipelines.html">Pipelines in Azure ML</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ds-deploy.html">Deploying a ML model</a></li>
 </ul>
@@ -278,7 +277,7 @@
       
       
       
-      <li><a href="https://github.com/hkjeldsberg/azure-de-ds/issues/new?title=Issue%20on%20page%20%2Findex.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/hkjeldsberg/azure-de-ds/issues/new?title=Issue%20on%20page%20%2Fds-tune.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -308,7 +307,7 @@
       
       
       
-      <li><a href="_sources/index.md" target="_blank"
+      <li><a href="_sources/ds-tune.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -392,7 +391,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Azure Documentation</h1>
+    <h1>Tuning hyperparameters</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -402,9 +401,11 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contents">Contents</a><ul class="nav section-nav flex-column">
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#discrete-hyperparameters">Discrete hyperparameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#continuous-hyperparameters">Continuous hyperparameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-a-search-spate">Defining a search spate</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sampling-methods">Sampling methods</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sweep-job">Sweep job</a></li>
 </ul>
             </nav>
         </div>
@@ -416,44 +417,72 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="azure-documentation">
-<h1>Azure Documentation<a class="headerlink" href="#azure-documentation" title="Link to this heading">#</a></h1>
-<p>This documentation contains information related to Azure’s Data Engineer and Data Scientist Career paths.</p>
-<section id="contents">
-<h2>Contents<a class="headerlink" href="#contents" title="Link to this heading">#</a></h2>
-<div class="toctree-wrapper compound">
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Azure Data Engineer</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="de-commands.html">Azure Data Engineer Fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="synapse-sql-pool.html">Azure Synapse serverless SQL pool</a></li>
-<li class="toctree-l1"><a class="reference internal" href="auth.html">Authentication in Azure Synapse</a></li>
+  <section class="tex2jax_ignore mathjax_ignore" id="tuning-hyperparameters">
+<h1>Tuning hyperparameters<a class="headerlink" href="#tuning-hyperparameters" title="Link to this heading">#</a></h1>
+<p>The choice of hyperparameter values can significantly affect the resulting model, making it important to select the best
+possible values for your particular data and predictive performance goals.</p>
+<p><strong>Hyperparameter tuning</strong> is accomplished by training the multiple models, using the same algorithm and training data
+but different hyperparameter values. The resulting model from each training run is then evaluated to determine the
+performance metric for which you want to optimize (for example, accuracy), and the best-performing model is selected.</p>
+<section id="discrete-hyperparameters">
+<h2>Discrete hyperparameters<a class="headerlink" href="#discrete-hyperparameters" title="Link to this heading">#</a></h2>
+<p>You can also select discrete values from any of the following discrete distributions:</p>
+<ul class="simple">
+<li><p>QUniform(min_value, max_value, q): Returns a value like round(Uniform(min_value, max_value) / q) * q</p></li>
+<li><p>QLogUniform(min_value, max_value, q): Returns a value like round(exp(Uniform(min_value, max_value)) / q) * q</p></li>
+<li><p>QNormal(mu, sigma, q): Returns a value like round(Normal(mu, sigma) / q) * q</p></li>
+<li><p>QLogNormal(mu, sigma, q): Returns a value like round(exp(Normal(mu, sigma)) / q) * q</p></li>
 </ul>
-</div>
-<div class="toctree-wrapper compound">
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Apache Spark</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="spark.html">Introduction to Apache Spark</a></li>
-<li class="toctree-l1"><a class="reference internal" href="spark_analyze.html">Analyze data with Spark</a></li>
-<li class="toctree-l1"><a class="reference internal" href="spark_viz.html">Data visualization in Spark</a></li>
+</section>
+<section id="continuous-hyperparameters">
+<h2>Continuous hyperparameters<a class="headerlink" href="#continuous-hyperparameters" title="Link to this heading">#</a></h2>
+<p>Some hyperparameters are continuous - in other words you can use any value along a scale, resulting in an infinite
+number of possibilities. To define a search space for these kinds of value, you can use any of the following
+distribution types:</p>
+<ul class="simple">
+<li><p>Uniform(min_value, max_value): Returns a value uniformly distributed between min_value and max_value</p></li>
+<li><p>LogUniform(min_value, max_value): Returns a value drawn according to exp(Uniform(min_value, max_value)) so that the
+logarithm of the return value is uniformly distributed</p></li>
+<li><p>Normal(mu, sigma): Returns a real value that’s normally distributed with mean mu and standard deviation sigma</p></li>
+<li><p>LogNormal(mu, sigma): Returns a value drawn according to exp(Normal(mu, sigma)) so that the logarithm of the return
+value is normally distributed</p></li>
 </ul>
+</section>
+<section id="defining-a-search-spate">
+<h2>Defining a search spate<a class="headerlink" href="#defining-a-search-spate" title="Link to this heading">#</a></h2>
+<p>A search space can be created by passing multiple values to the hyperparmeters for a <code class="docutils literal notranslate"><span class="pre">job()</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">azure.ai.ml.sweep</span> <span class="kn">import</span> <span class="n">Choice</span><span class="p">,</span> <span class="n">Normal</span>
+
+<span class="n">command_job_for_sweep</span> <span class="o">=</span> <span class="n">job</span><span class="p">(</span>
+    <span class="n">batch_size</span><span class="o">=</span><span class="n">Choice</span><span class="p">(</span><span class="n">values</span><span class="o">=</span><span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">]),</span>
+    <span class="n">learning_rate</span><span class="o">=</span><span class="n">Normal</span><span class="p">(</span><span class="n">mu</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
 </div>
-<div class="toctree-wrapper compound">
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Azure Data Scientist</span></p>
+</section>
+<section id="sampling-methods">
+<h2>Sampling methods<a class="headerlink" href="#sampling-methods" title="Link to this heading">#</a></h2>
+<p>The specific values used in a hyperparameter tuning run, or sweep job, depend on the type of sampling used.</p>
+<p>There are three main sampling methods available in Azure Machine Learning:</p>
+<ul class="simple">
+<li><p><strong>Grid sampling</strong>: Tries every possible combination.</p></li>
+<li><p><strong>Random sampling</strong>: Randomly chooses values from the search space.</p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="ds-commands.html">Introduction to Azure Machine Learning (ML)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ds-python.html">Azure ML Python SDK</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ds-cli.html">Azure CLI with ML</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ds-data.html">Data storage in Azure ML</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ds-compute.html">Compute targets on Azure ML</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ds-script.html">Running a training script in Azure ML</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ds-env.html">Environments in Azure ML</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ds-model.html">Finding the “best” model by using AutoML</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ds-track.html">Track model training in Jupyter notebooks</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ds-tune.html">Tuning hyperparameters</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ds-pipelines.html">Pipelines in Azure ML</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ds-deploy.html">Deploying a ML model</a></li>
+<li><p><strong>Sobol</strong>: Adds a seed to random sampling to make the results reproducible.</p></li>
 </ul>
-</div>
+</li>
+<li><p><strong>Bayesian sampling</strong>: Chooses new values based on previous results.</p></li>
+</ul>
+</section>
+<section id="sweep-job">
+<h2>Sweep job<a class="headerlink" href="#sweep-job" title="Link to this heading">#</a></h2>
+<p>To run a sweep job, you need to create a training script just the way you would do for any other training job, except
+that your script must:</p>
+<ul class="simple">
+<li><p>Include an argument for each hyperparameter you want to vary.</p></li>
+<li><p>Log the target performance metric with MLflow. A logged metric enables the sweep job to evaluate the performance of
+the trials it initiates, and identify the one that produces the best performing model.</p></li>
+</ul>
 </section>
 </section>
 
@@ -487,12 +516,21 @@ document.write(`
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="ds-track.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Track model training in Jupyter notebooks</p>
+      </div>
+    </a>
     <a class="right-next"
-       href="de-commands.html"
+       href="ds-pipelines.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Azure Data Engineer Fundamentals</p>
+        <p class="prev-next-title">Pipelines in Azure ML</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -512,9 +550,11 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contents">Contents</a><ul class="nav section-nav flex-column">
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#discrete-hyperparameters">Discrete hyperparameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#continuous-hyperparameters">Continuous hyperparameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-a-search-spate">Defining a search spate</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sampling-methods">Sampling methods</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sweep-job">Sweep job</a></li>
 </ul>
   </nav></div>
 

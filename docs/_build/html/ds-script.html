@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Azure Documentation &#8212; Azure Data Engineer/Scientist docs</title>
+    <title>Running a training script in Azure ML &#8212; Azure Data Engineer/Scientist docs</title>
   
   
   
@@ -57,10 +57,11 @@
     <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'ds-script';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Azure Data Engineer Fundamentals" href="de-commands.html" />
+    <link rel="next" title="Environments in Azure ML" href="ds-env.html" />
+    <link rel="prev" title="Compute targets on Azure ML" href="ds-compute.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
     <meta name="docbuild:last-update" content="Nov 18, 2024"/>
@@ -124,8 +125,6 @@
       
       
       
-        
-      
       <div class="bd-sidebar-primary bd-sidebar">
         
 
@@ -144,7 +143,7 @@
     
   
 
-<a class="navbar-brand logo" href="#">
+<a class="navbar-brand logo" href="index.html">
   
   
   
@@ -175,8 +174,8 @@
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
-            <li class="toctree-l1 current active">
-                <a class="reference internal" href="#">
+            <li class="toctree-l1">
+                <a class="reference internal" href="index.html">
                     Azure Documentation
                 </a>
             </li>
@@ -194,13 +193,13 @@
 <li class="toctree-l1"><a class="reference internal" href="spark_viz.html">Data visualization in Spark</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Azure Data Scientist</span></p>
-<ul class="nav bd-sidenav">
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="ds-commands.html">Introduction to Azure Machine Learning (ML)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ds-python.html">Azure ML Python SDK</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ds-cli.html">Azure CLI with ML</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ds-data.html">Data storage in Azure ML</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ds-compute.html">Compute targets on Azure ML</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ds-script.html">Running a training script in Azure ML</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Running a training script in Azure ML</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ds-env.html">Environments in Azure ML</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ds-model.html">Finding the “best” model by using AutoML</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ds-track.html">Track model training in Jupyter notebooks</a></li>
@@ -278,7 +277,7 @@
       
       
       
-      <li><a href="https://github.com/hkjeldsberg/azure-de-ds/issues/new?title=Issue%20on%20page%20%2Findex.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/hkjeldsberg/azure-de-ds/issues/new?title=Issue%20on%20page%20%2Fds-script.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -308,7 +307,7 @@
       
       
       
-      <li><a href="_sources/index.md" target="_blank"
+      <li><a href="_sources/ds-script.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -392,7 +391,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Azure Documentation</h1>
+    <h1>Running a training script in Azure ML</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -402,9 +401,8 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contents">Contents</a><ul class="nav section-nav flex-column">
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#from-notebook-to-script">From Notebook to Script</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-a-script">Running a script</a></li>
 </ul>
             </nav>
         </div>
@@ -416,43 +414,73 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="azure-documentation">
-<h1>Azure Documentation<a class="headerlink" href="#azure-documentation" title="Link to this heading">#</a></h1>
-<p>This documentation contains information related to Azure’s Data Engineer and Data Scientist Career paths.</p>
-<section id="contents">
-<h2>Contents<a class="headerlink" href="#contents" title="Link to this heading">#</a></h2>
-<div class="toctree-wrapper compound">
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Azure Data Engineer</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="de-commands.html">Azure Data Engineer Fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="synapse-sql-pool.html">Azure Synapse serverless SQL pool</a></li>
-<li class="toctree-l1"><a class="reference internal" href="auth.html">Authentication in Azure Synapse</a></li>
-</ul>
+  <section class="tex2jax_ignore mathjax_ignore" id="running-a-training-script-in-azure-ml">
+<h1>Running a training script in Azure ML<a class="headerlink" href="#running-a-training-script-in-azure-ml" title="Link to this heading">#</a></h1>
+<section id="from-notebook-to-script">
+<h2>From Notebook to Script<a class="headerlink" href="#from-notebook-to-script" title="Link to this heading">#</a></h2>
+<p>If you’ve worked primarily with notebooks, we will need to convert the notebook to a script.
+This includes removing non-essential code, refactoring code into functions and adding tests.</p>
+<p>E.g. changing:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># read and visualize the data</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reading data...&quot;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;diabetes.csv&#39;</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+
+<span class="c1"># split data</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Splitting data...&quot;</span><span class="p">)</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;Pregnancies&#39;</span><span class="p">,</span> <span class="s1">&#39;PlasmaGlucose&#39;</span><span class="p">,</span> <span class="s1">&#39;DiastolicBloodPressure&#39;</span><span class="p">,</span> <span class="s1">&#39;TricepsThickness&#39;</span><span class="p">,</span> <span class="s1">&#39;SerumInsulin&#39;</span><span class="p">,</span> <span class="s1">&#39;BMI&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;DiabetesPedigree&#39;</span><span class="p">,</span> <span class="s1">&#39;Age&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Diabetic&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.30</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
 </div>
-<div class="toctree-wrapper compound">
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Apache Spark</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="spark.html">Introduction to Apache Spark</a></li>
-<li class="toctree-l1"><a class="reference internal" href="spark_analyze.html">Analyze data with Spark</a></li>
-<li class="toctree-l1"><a class="reference internal" href="spark_viz.html">Data visualization in Spark</a></li>
-</ul>
+<p>to</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">csv_file</span><span class="p">):</span>
+    <span class="c1"># read data</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">get_data</span><span class="p">(</span><span class="n">csv_file</span><span class="p">)</span>
+
+    <span class="c1"># split data</span>
+    <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">split_data</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+
+<span class="c1"># function that reads the data</span>
+<span class="k">def</span> <span class="nf">get_data</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">df</span>
+
+
+<span class="c1"># function that splits the data</span>
+<span class="k">def</span> <span class="nf">split_data</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;Pregnancies&#39;</span><span class="p">,</span> <span class="s1">&#39;PlasmaGlucose&#39;</span><span class="p">,</span> <span class="s1">&#39;DiastolicBloodPressure&#39;</span><span class="p">,</span> <span class="s1">&#39;TricepsThickness&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;SerumInsulin&#39;</span><span class="p">,</span> <span class="s1">&#39;BMI&#39;</span><span class="p">,</span> <span class="s1">&#39;DiabetesPedigree&#39;</span><span class="p">,</span> <span class="s1">&#39;Age&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Diabetic&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.30</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span>
+</pre></div>
 </div>
-<div class="toctree-wrapper compound">
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Azure Data Scientist</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="ds-commands.html">Introduction to Azure Machine Learning (ML)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ds-python.html">Azure ML Python SDK</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ds-cli.html">Azure CLI with ML</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ds-data.html">Data storage in Azure ML</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ds-compute.html">Compute targets on Azure ML</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ds-script.html">Running a training script in Azure ML</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ds-env.html">Environments in Azure ML</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ds-model.html">Finding the “best” model by using AutoML</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ds-track.html">Track model training in Jupyter notebooks</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ds-tune.html">Tuning hyperparameters</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ds-pipelines.html">Pipelines in Azure ML</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ds-deploy.html">Deploying a ML model</a></li>
-</ul>
+</section>
+<section id="running-a-script">
+<h2>Running a script<a class="headerlink" href="#running-a-script" title="Link to this heading">#</a></h2>
+<p>A command job to run a file named <code class="docutils literal notranslate"><span class="pre">train.py</span></code> on the compute cluster <code class="docutils literal notranslate"><span class="pre">aml-cluster</span></code> can be done as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">azure.ai.ml</span> <span class="kn">import</span> <span class="n">command</span>
+
+<span class="c1"># configure job</span>
+<span class="n">job</span> <span class="o">=</span> <span class="n">command</span><span class="p">(</span>
+    <span class="n">code</span><span class="o">=</span><span class="s2">&quot;./src&quot;</span><span class="p">,</span>
+    <span class="n">command</span><span class="o">=</span><span class="s2">&quot;python train.py&quot;</span><span class="p">,</span>
+    <span class="n">environment</span><span class="o">=</span><span class="s2">&quot;AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest&quot;</span><span class="p">,</span>
+    <span class="n">compute</span><span class="o">=</span><span class="s2">&quot;aml-cluster&quot;</span><span class="p">,</span>
+    <span class="n">display_name</span><span class="o">=</span><span class="s2">&quot;train-model&quot;</span><span class="p">,</span>
+    <span class="n">experiment_name</span><span class="o">=</span><span class="s2">&quot;train-classification-model&quot;</span>
+    <span class="p">)</span>
+
+<span class="c1"># submit job</span>
+<span class="n">returned_job</span> <span class="o">=</span> <span class="n">ml_client</span><span class="o">.</span><span class="n">create_or_update</span><span class="p">(</span><span class="n">job</span><span class="p">)</span>
+</pre></div>
 </div>
 </section>
 </section>
@@ -487,12 +515,21 @@ document.write(`
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="ds-compute.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Compute targets on Azure ML</p>
+      </div>
+    </a>
     <a class="right-next"
-       href="de-commands.html"
+       href="ds-env.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Azure Data Engineer Fundamentals</p>
+        <p class="prev-next-title">Environments in Azure ML</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -512,9 +549,8 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contents">Contents</a><ul class="nav section-nav flex-column">
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#from-notebook-to-script">From Notebook to Script</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-a-script">Running a script</a></li>
 </ul>
   </nav></div>
 

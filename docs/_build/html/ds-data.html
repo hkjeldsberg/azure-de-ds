@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Azure Documentation &#8212; Azure Data Engineer/Scientist docs</title>
+    <title>Data storage in Azure ML &#8212; Azure Data Engineer/Scientist docs</title>
   
   
   
@@ -57,10 +57,11 @@
     <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'ds-data';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Azure Data Engineer Fundamentals" href="de-commands.html" />
+    <link rel="next" title="Compute targets on Azure ML" href="ds-compute.html" />
+    <link rel="prev" title="Azure CLI with ML" href="ds-cli.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
     <meta name="docbuild:last-update" content="Nov 18, 2024"/>
@@ -124,8 +125,6 @@
       
       
       
-        
-      
       <div class="bd-sidebar-primary bd-sidebar">
         
 
@@ -144,7 +143,7 @@
     
   
 
-<a class="navbar-brand logo" href="#">
+<a class="navbar-brand logo" href="index.html">
   
   
   
@@ -175,8 +174,8 @@
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
-            <li class="toctree-l1 current active">
-                <a class="reference internal" href="#">
+            <li class="toctree-l1">
+                <a class="reference internal" href="index.html">
                     Azure Documentation
                 </a>
             </li>
@@ -194,11 +193,11 @@
 <li class="toctree-l1"><a class="reference internal" href="spark_viz.html">Data visualization in Spark</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Azure Data Scientist</span></p>
-<ul class="nav bd-sidenav">
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="ds-commands.html">Introduction to Azure Machine Learning (ML)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ds-python.html">Azure ML Python SDK</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ds-cli.html">Azure CLI with ML</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ds-data.html">Data storage in Azure ML</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Data storage in Azure ML</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ds-compute.html">Compute targets on Azure ML</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ds-script.html">Running a training script in Azure ML</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ds-env.html">Environments in Azure ML</a></li>
@@ -278,7 +277,7 @@
       
       
       
-      <li><a href="https://github.com/hkjeldsberg/azure-de-ds/issues/new?title=Issue%20on%20page%20%2Findex.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/hkjeldsberg/azure-de-ds/issues/new?title=Issue%20on%20page%20%2Fds-data.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -308,7 +307,7 @@
       
       
       
-      <li><a href="_sources/index.md" target="_blank"
+      <li><a href="_sources/ds-data.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -392,7 +391,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Azure Documentation</h1>
+    <h1>Data storage in Azure ML</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -402,7 +401,12 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contents">Contents</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#azure-datastore">Azure Datastore</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-a-datastore">Creating a datastore</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-asset">Data asset</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-uri-file-data-asset">Creating URI file data asset</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-uri-folder-data-asset">Creating URI folder data asset</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-a-mltable-data-asset">Creating a MLTable data asset</a></li>
 </ul>
 </li>
 </ul>
@@ -416,44 +420,146 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="azure-documentation">
-<h1>Azure Documentation<a class="headerlink" href="#azure-documentation" title="Link to this heading">#</a></h1>
-<p>This documentation contains information related to Azure’s Data Engineer and Data Scientist Career paths.</p>
-<section id="contents">
-<h2>Contents<a class="headerlink" href="#contents" title="Link to this heading">#</a></h2>
-<div class="toctree-wrapper compound">
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Azure Data Engineer</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="de-commands.html">Azure Data Engineer Fundamentals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="synapse-sql-pool.html">Azure Synapse serverless SQL pool</a></li>
-<li class="toctree-l1"><a class="reference internal" href="auth.html">Authentication in Azure Synapse</a></li>
+  <section class="tex2jax_ignore mathjax_ignore" id="data-storage-in-azure-ml">
+<h1>Data storage in Azure ML<a class="headerlink" href="#data-storage-in-azure-ml" title="Link to this heading">#</a></h1>
+<p>The three protocols when working with data are:</p>
+<ul class="simple">
+<li><p>http(s): Public or private data stores in Azure Blob Storage or publicly available locations</p></li>
+<li><p>abfs(s): Azure Data Lake Storage</p></li>
+<li><p>azureml: Data stored in a <em>datastore</em></p></li>
 </ul>
-</div>
-<div class="toctree-wrapper compound">
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Apache Spark</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="spark.html">Introduction to Apache Spark</a></li>
-<li class="toctree-l1"><a class="reference internal" href="spark_analyze.html">Analyze data with Spark</a></li>
-<li class="toctree-l1"><a class="reference internal" href="spark_viz.html">Data visualization in Spark</a></li>
+<section id="azure-datastore">
+<h2>Azure Datastore<a class="headerlink" href="#azure-datastore" title="Link to this heading">#</a></h2>
+<p>When you create a datastore in Azure Machine Learning, you’ll store the connection and authentication information in the
+workspace. Then, to access the data in the container, you can use the azureml protocol.</p>
+<p>Note that a datastore is a reference to an existing storage account on Azure.</p>
+</section>
+<section id="creating-a-datastore">
+<h2>Creating a datastore<a class="headerlink" href="#creating-a-datastore" title="Link to this heading">#</a></h2>
+<p>Datastores can be created for multiple kinds of Azure data sources:</p>
+<ul class="simple">
+<li><p>Azure Blob Storage</p></li>
+<li><p>Azure File Share</p></li>
+<li><p>Azure Data Lake</p></li>
 </ul>
-</div>
-<div class="toctree-wrapper compound">
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Azure Data Scientist</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="ds-commands.html">Introduction to Azure Machine Learning (ML)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ds-python.html">Azure ML Python SDK</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ds-cli.html">Azure CLI with ML</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ds-data.html">Data storage in Azure ML</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ds-compute.html">Compute targets on Azure ML</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ds-script.html">Running a training script in Azure ML</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ds-env.html">Environments in Azure ML</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ds-model.html">Finding the “best” model by using AutoML</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ds-track.html">Track model training in Jupyter notebooks</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ds-tune.html">Tuning hyperparameters</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ds-pipelines.html">Pipelines in Azure ML</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ds-deploy.html">Deploying a ML model</a></li>
+<p>Authentication to datastores is one of the two:</p>
+<ul class="simple">
+<li><p>Credential-based: Service principal, shared access signature token or account key</p></li>
+<li><p>Identity-based: With Entra ID or managed identity</p></li>
 </ul>
+<p>To create a datastore with the Python SDK:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">blob_datastore</span> <span class="o">=</span> <span class="n">AzureBlobDatastore</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;blob_example&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Datastore pointing to a blob container&quot;</span><span class="p">,</span>
+    <span class="n">account_name</span><span class="o">=</span><span class="s2">&quot;mytestblobstore&quot;</span><span class="p">,</span>
+    <span class="n">container_name</span><span class="o">=</span><span class="s2">&quot;data-container&quot;</span><span class="p">,</span>
+    <span class="n">credentials</span><span class="o">=</span><span class="n">AccountKeyConfiguration</span><span class="p">(</span>
+        <span class="n">account_key</span><span class="o">=</span><span class="s2">&quot;XXXxxxXXXxXXXXxxXXX&quot;</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+<span class="n">ml_client</span><span class="o">.</span><span class="n">create_or_update</span><span class="p">(</span><span class="n">blob_datastore</span><span class="p">)</span>
+</pre></div>
 </div>
+<p>Alternatively use <code class="docutils literal notranslate"><span class="pre">credentials=SasTokenConfiguration()</span></code> to use a SAS token.</p>
+</section>
+<section id="data-asset">
+<h2>Data asset<a class="headerlink" href="#data-asset" title="Link to this heading">#</a></h2>
+<p>Data assets are references to where the data is stored to easily get access to data used for training.
+You can create data assets to get access to data in datastores, Azure storage services, public URLs, or data stored on
+your local device.
+Benefits are:</p>
+<ul class="simple">
+<li><p>Sharing and reusing data</p></li>
+<li><p>Seamlessly access data</p></li>
+<li><p>Versioning of metadata</p></li>
+</ul>
+<p>The three main types of data assets are:</p>
+<ul class="simple">
+<li><p>URI file: Specific file</p></li>
+<li><p>URI folder: Specific folder</p></li>
+<li><p>MLTable: Folder or file, and includes a schema to read as tabular data</p></li>
+</ul>
+<section id="creating-uri-file-data-asset">
+<h3>Creating URI file data asset<a class="headerlink" href="#creating-uri-file-data-asset" title="Link to this heading">#</a></h3>
+<p>To create a URI file, you will need to use one of the supported paths:</p>
+<ul class="simple">
+<li><p>Local: <code class="docutils literal notranslate"><span class="pre">./&lt;path&gt;</span></code></p></li>
+<li><p>Azure Blob Storage:<code class="docutils literal notranslate"><span class="pre">wasbs://&lt;account_name&gt;.blob.core.windows.net/&lt;container_name&gt;/&lt;folder&gt;/&lt;file&gt;</span></code></p></li>
+<li><p>Azure Data Lake Storage (Gen 2): <code class="docutils literal notranslate"><span class="pre">abfss://&lt;file_system&gt;&#64;&lt;account_name&gt;.dfs.core.windows.net/&lt;folder&gt;/&lt;file&gt;</span></code></p></li>
+<li><p>Datastore: <code class="docutils literal notranslate"><span class="pre">azureml://datastores/&lt;datastore_name&gt;/paths/&lt;folder&gt;/&lt;file&gt;</span></code></p></li>
+</ul>
+<p>Then to create a URI file data asset using the Python SDK:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">azure.ai.ml.entities</span> <span class="kn">import</span> <span class="n">Data</span>
+<span class="kn">from</span> <span class="nn">azure.ai.ml.constants</span> <span class="kn">import</span> <span class="n">AssetTypes</span>
+
+<span class="n">my_path</span> <span class="o">=</span> <span class="s1">&#39;&lt;supported-path&gt;&#39;</span>
+
+<span class="n">my_data</span> <span class="o">=</span> <span class="n">Data</span><span class="p">(</span>
+    <span class="n">path</span><span class="o">=</span><span class="n">my_path</span><span class="p">,</span>
+    <span class="nb">type</span><span class="o">=</span><span class="n">AssetTypes</span><span class="o">.</span><span class="n">URI_FILE</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&lt;description&gt;&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">,</span>
+    <span class="n">version</span><span class="o">=</span><span class="s2">&quot;&lt;version&gt;&quot;</span>
+<span class="p">)</span>
+
+<span class="n">ml_client</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">create_or_update</span><span class="p">(</span><span class="n">my_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="creating-uri-folder-data-asset">
+<h3>Creating URI folder data asset<a class="headerlink" href="#creating-uri-folder-data-asset" title="Link to this heading">#</a></h3>
+<p>To create a URI folder data asset:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">azure.ai.ml.entities</span> <span class="kn">import</span> <span class="n">Data</span>
+<span class="kn">from</span> <span class="nn">azure.ai.ml.constants</span> <span class="kn">import</span> <span class="n">AssetTypes</span>
+
+<span class="n">my_path</span> <span class="o">=</span> <span class="s1">&#39;&lt;supported-path&gt;&#39;</span>
+
+<span class="n">my_data</span> <span class="o">=</span> <span class="n">Data</span><span class="p">(</span>
+    <span class="n">path</span><span class="o">=</span><span class="n">my_path</span><span class="p">,</span>
+    <span class="nb">type</span><span class="o">=</span><span class="n">AssetTypes</span><span class="o">.</span><span class="n">URI_FOLDER</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&lt;description&gt;&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">,</span>
+    <span class="n">version</span><span class="o">=</span><span class="s1">&#39;&lt;version&gt;&#39;</span>
+<span class="p">)</span>
+
+<span class="n">ml_client</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">create_or_update</span><span class="p">(</span><span class="n">my_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="creating-a-mltable-data-asset">
+<h3>Creating a MLTable data asset<a class="headerlink" href="#creating-a-mltable-data-asset" title="Link to this heading">#</a></h3>
+<p>Use a MLTable when the schema of your data is complex or changes frequently.
+Then you only have to change how to read the data in the data asset itself.
+To create a MLTable, first create a schema (<code class="docutils literal notranslate"><span class="pre">schema.yaml</span></code>):</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mltable</span>
+
+<span class="nt">paths</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">pattern</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./*.txt</span>
+<span class="nt">transformations</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">read_delimited</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">delimiter</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;,&#39;</span>
+<span class="w">      </span><span class="nt">encoding</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ascii</span>
+<span class="w">      </span><span class="nt">header</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">all_files_same_headers</span>
+</pre></div>
+</div>
+<p>Then to create a MLTable data asset:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">azure.ai.ml.constants</span> <span class="kn">import</span> <span class="n">AssetTypes</span>
+<span class="kn">from</span> <span class="nn">azure.ai.ml.entities</span> <span class="kn">import</span> <span class="n">Data</span>
+
+<span class="n">my_path</span> <span class="o">=</span> <span class="s1">&#39;&lt;path-including-mltable-file&gt;&#39;</span>
+
+<span class="n">my_data</span> <span class="o">=</span> <span class="n">Data</span><span class="p">(</span>
+    <span class="n">path</span><span class="o">=</span><span class="n">my_path</span><span class="p">,</span>
+    <span class="nb">type</span><span class="o">=</span><span class="n">AssetTypes</span><span class="o">.</span><span class="n">MLTABLE</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&lt;description&gt;&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">,</span>
+    <span class="n">version</span><span class="o">=</span><span class="s1">&#39;&lt;version&gt;&#39;</span>
+<span class="p">)</span>
+
+<span class="n">ml_client</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">create_or_update</span><span class="p">(</span><span class="n">my_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
 </section>
 </section>
 
@@ -487,12 +593,21 @@ document.write(`
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="ds-cli.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Azure CLI with ML</p>
+      </div>
+    </a>
     <a class="right-next"
-       href="de-commands.html"
+       href="ds-compute.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Azure Data Engineer Fundamentals</p>
+        <p class="prev-next-title">Compute targets on Azure ML</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -512,7 +627,12 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contents">Contents</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#azure-datastore">Azure Datastore</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-a-datastore">Creating a datastore</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-asset">Data asset</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-uri-file-data-asset">Creating URI file data asset</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-uri-folder-data-asset">Creating URI folder data asset</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-a-mltable-data-asset">Creating a MLTable data asset</a></li>
 </ul>
 </li>
 </ul>
