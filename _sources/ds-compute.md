@@ -12,7 +12,6 @@ The following types of compute are available on Azure ML:
 - Attached compute: Attach existing compute (Azure VM, Azure Databricks)
 - Serverless compute: On-demand compute for training jobs
 
-
 ## Creating a compute instance
 
 To create a compute instance with Python SDK:
@@ -29,3 +28,12 @@ ml_client.begin_create_or_update(ci_basic).result()
 ```
 
 Note that a compute instance can only be assigned to _one_ user.
+
+## Creating a compute cluster
+
+Similarly, a compute cluster can be used for the three scenarios:
+
+- Pipeline job built in the Designer
+- Automated ML job
+- Running a job script
+

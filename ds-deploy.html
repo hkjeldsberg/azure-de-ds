@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Azure Data Engineer Fundamentals &#8212; Azure Data Engineer/Scientist docs</title>
+    <title>Deploying a ML model &#8212; Azure Data Engineer/Scientist docs</title>
   
   
   
@@ -59,11 +59,10 @@
     <script src="_static/design-tabs.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'de-commands';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'ds-deploy';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Azure Synapse serverless SQL pool" href="synapse-sql-pool.html" />
-    <link rel="prev" title="Azure Documentation" href="index.html" />
+    <link rel="prev" title="Pipelines in Azure ML" href="ds-pipelines.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
     <meta name="docbuild:last-update" content="Nov 18, 2024"/>
@@ -183,8 +182,8 @@
             </li>
         </ul>
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Azure Data Engineer</span></p>
-<ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Azure Data Engineer Fundamentals</a></li>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="de-commands.html">Azure Data Engineer Fundamentals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="synapse-sql-pool.html">Azure Synapse serverless SQL pool</a></li>
 <li class="toctree-l1"><a class="reference internal" href="auth.html">Authentication in Azure Synapse</a></li>
 </ul>
@@ -195,7 +194,7 @@
 <li class="toctree-l1"><a class="reference internal" href="spark_viz.html">Data visualization in Spark</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Azure Data Scientist</span></p>
-<ul class="nav bd-sidenav">
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="ds-commands.html">Introduction to Azure Machine Learning (ML)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ds-python.html">Azure ML Python SDK</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ds-cli.html">Azure CLI with ML</a></li>
@@ -207,7 +206,7 @@
 <li class="toctree-l1"><a class="reference internal" href="ds-track.html">Track model training in Jupyter notebooks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ds-tune.html">Tuning hyperparameters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ds-pipelines.html">Pipelines in Azure ML</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ds-deploy.html">Deploying a ML model</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Deploying a ML model</a></li>
 </ul>
 
     </div>
@@ -279,7 +278,7 @@
       
       
       
-      <li><a href="https://github.com/hkjeldsberg/azure-de-ds/issues/new?title=Issue%20on%20page%20%2Fde-commands.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/hkjeldsberg/azure-de-ds/issues/new?title=Issue%20on%20page%20%2Fds-deploy.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -309,7 +308,7 @@
       
       
       
-      <li><a href="_sources/de-commands.md" target="_blank"
+      <li><a href="_sources/ds-deploy.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -380,9 +379,7 @@ document.write(`
   </button>
 `);
 </script>
-<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="fa-solid fa-list"></span>
-</button>
+
 </div></div>
       
     </div>
@@ -393,22 +390,11 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Azure Data Engineer Fundamentals</h1>
+    <h1>Deploying a ML model</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
             
-            <div>
-                <h2> Contents </h2>
-            </div>
-            <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#azure-data-lake-storage-gen2">Azure Data Lake Storage Gen2</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#azure-blob-storage">Azure Blob storage</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#azure-synapse-analytics">Azure Synapse Analytics</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1"></a></li>
-</ul>
-            </nav>
         </div>
     </div>
 </div>
@@ -418,33 +404,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="azure-data-engineer-fundamentals">
-<h1>Azure Data Engineer Fundamentals<a class="headerlink" href="#azure-data-engineer-fundamentals" title="Permalink to this heading">#</a></h1>
-<section id="azure-data-lake-storage-gen2">
-<h2>Azure Data Lake Storage Gen2<a class="headerlink" href="#azure-data-lake-storage-gen2" title="Permalink to this heading">#</a></h2>
-<p>A data lake is a repository of data that is stored in its natural format, usually as blobs or files. Azure Data Lake
-Storage is a comprehensive, massively scalable, secure, and cost-effective data lake solution for high performance
-analytics built into Azure, combining a file system with a storage platform</p>
-</section>
-<section id="azure-blob-storage">
-<h2>Azure Blob storage<a class="headerlink" href="#azure-blob-storage" title="Permalink to this heading">#</a></h2>
-<p>Used to store large amounts of unstructured data (Objects) in a flat namespace.
-Azure Data Lake Storage Gen2 builds on blob storage by organizing blob data into <em>directories</em> including metadata.</p>
-</section>
-<section id="azure-synapse-analytics">
-<h2>Azure Synapse Analytics<a class="headerlink" href="#azure-synapse-analytics" title="Permalink to this heading">#</a></h2>
-<p>Azure Synapse Analytics provides a cloud platform for all of these analytical workloads through support for multiple
-data storage, processing, and analysis technologies in a single, integrated solution. The integrated design of Azure
-Synapse Analytics enables organizations to leverage investments and skills in multiple commonly used data technologies,
-including:</p>
-<ul class="simple">
-<li><p>SQL</p></li>
-<li><p>Apache Spark</p></li>
-</ul>
-</section>
-<section id="id1">
-<h2><a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
-</section>
+  <section class="tex2jax_ignore mathjax_ignore" id="deploying-a-ml-model">
+<h1>Deploying a ML model<a class="headerlink" href="#deploying-a-ml-model" title="Permalink to this heading">#</a></h1>
 </section>
 
     <script type="text/x-thebe-config">
@@ -478,22 +439,13 @@ including:</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="index.html"
+       href="ds-pipelines.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Azure Documentation</p>
+        <p class="prev-next-title">Pipelines in Azure ML</p>
       </div>
-    </a>
-    <a class="right-next"
-       href="synapse-sql-pool.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Azure Synapse serverless SQL pool</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>
@@ -501,24 +453,6 @@ including:</p>
             </div>
             
             
-              
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
-
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> Contents
-  </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#azure-data-lake-storage-gen2">Azure Data Lake Storage Gen2</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#azure-blob-storage">Azure Blob storage</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#azure-synapse-analytics">Azure Synapse Analytics</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1"></a></li>
-</ul>
-  </nav></div>
-
-</div></div>
               
             
           </div>
