@@ -24,3 +24,10 @@ parts:
       - file: ds-cli
       - file: ds-data
       - file: ds-compute
+      - file: ds-script
+      - file: ds-env
+      - file: ds-model
+      - file: ds-track
+      - file: ds-tune
+      - file: ds-pipelines
+      - file: ds-deploy
