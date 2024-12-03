@@ -62,10 +62,11 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'ds-deploy';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Designing a ML solution" href="ds-design.html" />
     <link rel="prev" title="Pipelines in Azure ML" href="ds-pipelines.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Nov 18, 2024"/>
+    <meta name="docbuild:last-update" content="Dec 03, 2024"/>
   </head>
   
   
@@ -207,6 +208,15 @@
 <li class="toctree-l1"><a class="reference internal" href="ds-tune.html">Tuning hyperparameters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ds-pipelines.html">Pipelines in Azure ML</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Deploying a ML model</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">ML Pipeline</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="ds-design.html">Designing a ML solution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ds-train.html">Designing a ML model for training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ds-deployment.html">Designing a ML model deployment solution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ds-register.html">Registering an MLflow model in Azure ML</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ds-ethics.html">Responsible AI</a></li>
 </ul>
 
     </div>
@@ -379,7 +389,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -395,6 +407,29 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Deploying a ML model</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deployment">Deployment</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#blue-green-deployment">Blue/Green deployment</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-an-endpoint">Creating an endpoint</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-batch-endpoints">Creating batch endpoints</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#batch-deployment">Batch deployment</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deploy-mlflow-model-to-batch-endpoint">Deploy MLFlow model to batch endpoint</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deploying-to-a-batch-endpoint-without-mlflow">Deploying to a batch endpoint WITHOUT MLFlow</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#trigger-a-batch-scoring-job">Trigger a batch scoring job</a></li>
+</ul>
+
+            </nav>
         </div>
     </div>
 </div>
@@ -406,6 +441,143 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="deploying-a-ml-model">
 <h1>Deploying a ML model<a class="headerlink" href="#deploying-a-ml-model" title="Permalink to this heading">#</a></h1>
+<p>In Azure ML there are two types of endpoints:</p>
+<ul class="simple">
+<li><p>Managed online endpoints: Azure Machine Learning manages all the underlying infrastructure.</p></li>
+<li><p>Kubernetes online endpoints: Users manage the Kubernetes cluster which provides the necessary infrastructure.</p></li>
+</ul>
+<section id="deployment">
+<h2>Deployment<a class="headerlink" href="#deployment" title="Permalink to this heading">#</a></h2>
+<p>To deploy your model to a managed online endpoint, you need to specify four things:</p>
+<ul class="simple">
+<li><p>Model assets like the model pickle file, or a registered model in the Azure Machine Learning workspace.</p></li>
+<li><p>Scoring script that loads the model.</p></li>
+<li><p>Environment which lists all necessary packages that need to be installed on the compute of the endpoint.</p></li>
+<li><p>Compute configuration including the needed compute size and scale settings to ensure you can handle the amount of
+requests the endpoint will receive.</p></li>
+</ul>
+<section id="blue-green-deployment">
+<h3>Blue/Green deployment<a class="headerlink" href="#blue-green-deployment" title="Permalink to this heading">#</a></h3>
+<p>With blue/green deployment, multiple versions of the model can be deployed to the same endpoint.
+In this case, the traffic is distributed between two versions of the model, e.g. 90% goes to the blue (v1) deployment,
+while 10% goes to the green (v2) deployment. If
+If the latest version doesn’t perform better, the model can easily roll back to <strong>v1</strong>.</p>
+</section>
+</section>
+<section id="creating-an-endpoint">
+<h2>Creating an endpoint<a class="headerlink" href="#creating-an-endpoint" title="Permalink to this heading">#</a></h2>
+<p>To create an endpoint use <code class="docutils literal notranslate"><span class="pre">ManagedOnlineEndpoint</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">azure.ai.ml.entities</span> <span class="kn">import</span> <span class="n">ManagedOnlineEndpoint</span>
+
+<span class="c1"># create an online endpoint</span>
+<span class="n">endpoint</span> <span class="o">=</span> <span class="n">ManagedOnlineEndpoint</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;endpoint-example&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Online endpoint&quot;</span><span class="p">,</span>
+    <span class="n">auth_mode</span><span class="o">=</span><span class="s2">&quot;key&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">ml_client</span><span class="o">.</span><span class="n">begin_create_or_update</span><span class="p">(</span><span class="n">endpoint</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="creating-batch-endpoints">
+<h2>Creating batch endpoints<a class="headerlink" href="#creating-batch-endpoints" title="Permalink to this heading">#</a></h2>
+<p>To perform batch predictions, we need to deploy the model a batch endpoint.
+The batch job can then be triggered from another service, such as <strong>Synapse Analytics</strong> or <strong>Databricks</strong>.</p>
+<p>To create the back endpoint use the <code class="docutils literal notranslate"><span class="pre">BatchEndpoint</span></code> class:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a batch endpoint</span>
+<span class="n">endpoint</span> <span class="o">=</span> <span class="n">BatchEndpoint</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;endpoint-example&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A batch endpoint&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">ml_client</span><span class="o">.</span><span class="n">batch_endpoints</span><span class="o">.</span><span class="n">begin_create_or_update</span><span class="p">(</span><span class="n">endpoint</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="batch-deployment">
+<h2>Batch deployment<a class="headerlink" href="#batch-deployment" title="Permalink to this heading">#</a></h2>
+<p>We can use <strong>compute clusters</strong> for batch deployments:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">azure.ai.ml.entities</span> <span class="kn">import</span> <span class="n">AmlCompute</span>
+
+<span class="n">cpu_cluster</span> <span class="o">=</span> <span class="n">AmlCompute</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;aml-cluster&quot;</span><span class="p">,</span>
+    <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;amlcompute&quot;</span><span class="p">,</span>
+    <span class="n">size</span><span class="o">=</span><span class="s2">&quot;STANDARD_DS11_V2&quot;</span><span class="p">,</span>
+    <span class="n">min_instances</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">max_instances</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">idle_time_before_scale_down</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span>
+    <span class="n">tier</span><span class="o">=</span><span class="s2">&quot;Dedicated&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">cpu_cluster</span> <span class="o">=</span> <span class="n">ml_client</span><span class="o">.</span><span class="n">compute</span><span class="o">.</span><span class="n">begin_create_or_update</span><span class="p">(</span><span class="n">cpu_cluster</span><span class="p">)</span>
+
+</pre></div>
+</div>
+</section>
+<section id="deploy-mlflow-model-to-batch-endpoint">
+<h2>Deploy MLFlow model to batch endpoint<a class="headerlink" href="#deploy-mlflow-model-to-batch-endpoint" title="Permalink to this heading">#</a></h2>
+<p>To avoid using a scoring script and environment, the MLFlow model needs to be registered in the Azure ML workspace:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">azure.ai.ml.constants</span> <span class="kn">import</span> <span class="n">AssetTypes</span>
+<span class="kn">from</span> <span class="nn">azure.ai.ml.entities</span> <span class="kn">import</span> <span class="n">Model</span>
+
+<span class="n">model_name</span> <span class="o">=</span> <span class="s1">&#39;mlflow-model&#39;</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">ml_client</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">create_or_update</span><span class="p">(</span>
+    <span class="n">Model</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">model_name</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;./model&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">AssetTypes</span><span class="o">.</span><span class="n">MLFLOW_MODEL</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Then, to deploy the MLFlow model to a batch endpoint, use <code class="docutils literal notranslate"><span class="pre">BatchDeployment</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">azure.ai.ml.constants</span> <span class="kn">import</span> <span class="n">BatchDeploymentOutputAction</span>
+<span class="kn">from</span> <span class="nn">azure.ai.ml.entities</span> <span class="kn">import</span> <span class="n">BatchDeployment</span><span class="p">,</span> <span class="n">BatchRetrySettings</span>
+
+<span class="n">deployment</span> <span class="o">=</span> <span class="n">BatchDeployment</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;forecast-mlflow&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A sales forecaster&quot;</span><span class="p">,</span>
+    <span class="n">endpoint_name</span><span class="o">=</span><span class="n">endpoint</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+    <span class="n">compute</span><span class="o">=</span><span class="s2">&quot;aml-cluster&quot;</span><span class="p">,</span>
+    <span class="n">instance_count</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">max_concurrency_per_instance</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">mini_batch_size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">output_action</span><span class="o">=</span><span class="n">BatchDeploymentOutputAction</span><span class="o">.</span><span class="n">APPEND_ROW</span><span class="p">,</span>
+    <span class="n">output_file_name</span><span class="o">=</span><span class="s2">&quot;predictions.csv&quot;</span><span class="p">,</span>
+    <span class="n">retry_settings</span><span class="o">=</span><span class="n">BatchRetrySettings</span><span class="p">(</span><span class="n">max_retries</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">300</span><span class="p">),</span>
+    <span class="n">logging_level</span><span class="o">=</span><span class="s2">&quot;info&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">ml_client</span><span class="o">.</span><span class="n">batch_deployments</span><span class="o">.</span><span class="n">begin_create_or_update</span><span class="p">(</span><span class="n">deployment</span><span class="p">)</span>
+</pre></div>
+</div>
+<section id="deploying-to-a-batch-endpoint-without-mlflow">
+<h3>Deploying to a batch endpoint WITHOUT MLFlow<a class="headerlink" href="#deploying-to-a-batch-endpoint-without-mlflow" title="Permalink to this heading">#</a></h3>
+<p>If you want to deploy a model to a batch endpoint without using the MLflow model format, you need to create the scoring
+script and environment:</p>
+<ul class="simple">
+<li><p>Scoring script consists of <code class="docutils literal notranslate"><span class="pre">init</span></code> and <code class="docutils literal notranslate"><span class="pre">run</span></code> methods</p></li>
+<li><p>Environment is defined by a conda configuration (<code class="docutils literal notranslate"><span class="pre">conda.yaml</span></code>) and created with the <code class="docutils literal notranslate"><span class="pre">Environment</span></code> class</p></li>
+</ul>
+</section>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="trigger-a-batch-scoring-job">
+<h1>Trigger a batch scoring job<a class="headerlink" href="#trigger-a-batch-scoring-job" title="Permalink to this heading">#</a></h1>
+<p>To prepare data for batch predictions, register a folder as a data asset and then use the registered data asset as input:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">azure.ai.ml</span> <span class="kn">import</span> <span class="n">Input</span>
+<span class="kn">from</span> <span class="nn">azure.ai.ml.constants</span> <span class="kn">import</span> <span class="n">AssetTypes</span>
+
+<span class="nb">input</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">AssetTypes</span><span class="o">.</span><span class="n">URI_FOLDER</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;azureml:new-data:1&quot;</span><span class="p">)</span>
+
+<span class="n">job</span> <span class="o">=</span> <span class="n">ml_client</span><span class="o">.</span><span class="n">batch_endpoints</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
+    <span class="n">endpoint_name</span><span class="o">=</span><span class="n">endpoint</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+    <span class="nb">input</span><span class="o">=</span><span class="nb">input</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For troubleshooting, investigate the output files:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">job_error.txt</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">job_progress_overview.txt</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">job_result.txt</span></code></p></li>
+</ul>
 </section>
 
     <script type="text/x-thebe-config">
@@ -447,12 +619,51 @@ document.write(`
         <p class="prev-next-title">Pipelines in Azure ML</p>
       </div>
     </a>
+    <a class="right-next"
+       href="ds-design.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Designing a ML solution</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div>
                 </footer>
               
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Deploying a ML model</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deployment">Deployment</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#blue-green-deployment">Blue/Green deployment</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-an-endpoint">Creating an endpoint</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-batch-endpoints">Creating batch endpoints</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#batch-deployment">Batch deployment</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deploy-mlflow-model-to-batch-endpoint">Deploy MLFlow model to batch endpoint</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deploying-to-a-batch-endpoint-without-mlflow">Deploying to a batch endpoint WITHOUT MLFlow</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#trigger-a-batch-scoring-job">Trigger a batch scoring job</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
               
             
           </div>
@@ -482,7 +693,7 @@ By Henrik A. Kjeldsberg
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Nov 18, 2024.
+  Last updated on Dec 03, 2024.
   <br/>
 </p>
   </div>

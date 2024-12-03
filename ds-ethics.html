@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Track model training in Jupyter notebooks &#8212; Azure Data Engineer/Scientist docs</title>
+    <title>Responsible AI &#8212; Azure Data Engineer/Scientist docs</title>
   
   
   
@@ -59,11 +59,10 @@
     <script src="_static/design-tabs.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'ds-track';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'ds-ethics';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Tuning hyperparameters" href="ds-tune.html" />
-    <link rel="prev" title="Finding the “best” model by using AutoML" href="ds-model.html" />
+    <link rel="prev" title="Registering an MLflow model in Azure ML" href="ds-register.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
     <meta name="docbuild:last-update" content="Dec 03, 2024"/>
@@ -195,7 +194,7 @@
 <li class="toctree-l1"><a class="reference internal" href="spark_viz.html">Data visualization in Spark</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Azure Data Scientist</span></p>
-<ul class="current nav bd-sidenav">
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="ds-commands.html">Introduction to Azure Machine Learning (ML)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ds-python.html">Azure ML Python SDK</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ds-cli.html">Azure CLI with ML</a></li>
@@ -204,19 +203,19 @@
 <li class="toctree-l1"><a class="reference internal" href="ds-script.html">Running a training script in Azure ML</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ds-env.html">Environments in Azure ML</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ds-model.html">Finding the “best” model by using AutoML</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Track model training in Jupyter notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ds-track.html">Track model training in Jupyter notebooks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ds-tune.html">Tuning hyperparameters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ds-pipelines.html">Pipelines in Azure ML</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ds-deploy.html">Deploying a ML model</a></li>
 
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">ML Pipeline</span></p>
-<ul class="nav bd-sidenav">
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="ds-design.html">Designing a ML solution</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ds-train.html">Designing a ML model for training</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ds-deployment.html">Designing a ML model deployment solution</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ds-register.html">Registering an MLflow model in Azure ML</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ds-ethics.html">Responsible AI</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Responsible AI</a></li>
 </ul>
 
     </div>
@@ -288,7 +287,7 @@
       
       
       
-      <li><a href="https://github.com/hkjeldsberg/azure-de-ds/issues/new?title=Issue%20on%20page%20%2Fds-track.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/hkjeldsberg/azure-de-ds/issues/new?title=Issue%20on%20page%20%2Fds-ethics.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -318,7 +317,7 @@
       
       
       
-      <li><a href="_sources/ds-track.md" target="_blank"
+      <li><a href="_sources/ds-ethics.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -389,9 +388,7 @@ document.write(`
   </button>
 `);
 </script>
-<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="fa-solid fa-list"></span>
-</button>
+
 </div></div>
       
     </div>
@@ -402,20 +399,11 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Track model training in Jupyter notebooks</h1>
+    <h1>Responsible AI</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
             
-            <div>
-                <h2> Contents </h2>
-            </div>
-            <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-autologging">Using autologging</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-custom-logging">Using custom logging</a></li>
-</ul>
-            </nav>
         </div>
     </div>
 </div>
@@ -425,45 +413,19 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="track-model-training-in-jupyter-notebooks">
-<h1>Track model training in Jupyter notebooks<a class="headerlink" href="#track-model-training-in-jupyter-notebooks" title="Permalink to this heading">#</a></h1>
-<p>Tracking models can be done with MLFlow; MLflow is an open-source library for tracking and managing your machine
-learning experiments. In particular, MLflow Tracking is a component of MLflow that logs everything about the model
-you’re training, such as parameters, metrics, and artifacts.</p>
-<p>To start tracking a local notebook, configure MLflow to point to the Azure ML workspare by setting
-<code class="docutils literal notranslate"><span class="pre">mlflow.set_tracking_uri</span> <span class="pre">=</span> <span class="pre">&quot;MLFLOW-TRACKING-URI&quot;</span></code>.</p>
-<section id="using-autologging">
-<h2>Using autologging<a class="headerlink" href="#using-autologging" title="Permalink to this heading">#</a></h2>
-<p>MLflow supports automatic logging for popular machine learning libraries. If you’re using a library that is supported by
-autolog, then MLflow tells the framework you’re using to log all the metrics, parameters, artifacts, and models that the
-framework considers relevant.
-It is enabled by calling <code class="docutils literal notranslate"><span class="pre">autolog()</span></code>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">mlflow</span>
-
-<span class="n">mlflow</span><span class="o">.</span><span class="n">xgboost</span><span class="o">.</span><span class="n">autolog</span><span class="p">()</span>
-</pre></div>
-</div>
-<p>As soon as <code class="docutils literal notranslate"><span class="pre">mlflow.xgboost.autolog()</span></code> is called, MLflow will start a run within an experiment in Azure Machine Learning
-to start tracking the experiment’s run.</p>
-</section>
-<section id="using-custom-logging">
-<h2>Using custom logging<a class="headerlink" href="#using-custom-logging" title="Permalink to this heading">#</a></h2>
-<p>Alternatively, manually logging is possible. Common functions used with custom logging are:</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="responsible-ai">
+<h1>Responsible AI<a class="headerlink" href="#responsible-ai" title="Permalink to this heading">#</a></h1>
+<p>Microsoft has listed five Responsible AI principles:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">mlflow.log_param()</span></code>: Logs a single key-value parameter. Use this function for an input parameter you want to log.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">mlflow.log_metric()</span></code>: Logs a single key-value metric. Value must be a number. Use this function for any output you
-want
-to store with the run.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">mlflow.log_artifact()</span></code>: Logs a file. Use this function for any plot you want to log, save as image file first.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">mlflow.log_model()</span></code>: Logs a model. Use this function to create an MLflow model, which may include a custom signature,
-environment, and input examples.</p></li>
+<li><p>Fairness and inclusiveness: Models should treat everyone fairly and avoid different treatment for similar groups.</p></li>
+<li><p>Reliability and safety: Models should be reliable, safe, and consistent. You want a model to operate as intended,
+handle unexpected situations well, and resist harmful manipulation.</p></li>
+<li><p>Privacy and security: Be transparent about data collection, use, and storage, to empower individuals with control over
+their data. Treat data with care to ensure an individual’s privacy.</p></li>
+<li><p>Transparency: When models influence important decisions that affect people’s lives, people need to understand how
+those decisions were made and how the model works.</p></li>
+<li><p>Accountability: Take accountability for decisions that models may influence and maintain human control.</p></li>
 </ul>
-<p>Custom logging is then enabled by:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mlflow</span><span class="o">.</span><span class="n">log_metric</span><span class="p">(</span><span class="s2">&quot;accuracy&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>here used to specify the <code class="docutils literal notranslate"><span class="pre">accuracy</span></code> metric.</p>
-</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -497,22 +459,13 @@ environment, and input examples.</p></li>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="ds-model.html"
+       href="ds-register.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Finding the “best” model by using AutoML</p>
+        <p class="prev-next-title">Registering an MLflow model in Azure ML</p>
       </div>
-    </a>
-    <a class="right-next"
-       href="ds-tune.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Tuning hyperparameters</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>
@@ -520,22 +473,6 @@ environment, and input examples.</p></li>
             </div>
             
             
-              
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
-
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> Contents
-  </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-autologging">Using autologging</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-custom-logging">Using custom logging</a></li>
-</ul>
-  </nav></div>
-
-</div></div>
               
             
           </div>

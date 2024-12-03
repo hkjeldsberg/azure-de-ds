@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Track model training in Jupyter notebooks &#8212; Azure Data Engineer/Scientist docs</title>
+    <title>Designing a ML model for training &#8212; Azure Data Engineer/Scientist docs</title>
   
   
   
@@ -59,11 +59,11 @@
     <script src="_static/design-tabs.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'ds-track';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'ds-train';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Tuning hyperparameters" href="ds-tune.html" />
-    <link rel="prev" title="Finding the “best” model by using AutoML" href="ds-model.html" />
+    <link rel="next" title="Designing a ML model deployment solution" href="ds-deployment.html" />
+    <link rel="prev" title="Designing a ML solution" href="ds-design.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
     <meta name="docbuild:last-update" content="Dec 03, 2024"/>
@@ -195,7 +195,7 @@
 <li class="toctree-l1"><a class="reference internal" href="spark_viz.html">Data visualization in Spark</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Azure Data Scientist</span></p>
-<ul class="current nav bd-sidenav">
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="ds-commands.html">Introduction to Azure Machine Learning (ML)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ds-python.html">Azure ML Python SDK</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ds-cli.html">Azure CLI with ML</a></li>
@@ -204,16 +204,16 @@
 <li class="toctree-l1"><a class="reference internal" href="ds-script.html">Running a training script in Azure ML</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ds-env.html">Environments in Azure ML</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ds-model.html">Finding the “best” model by using AutoML</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Track model training in Jupyter notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ds-track.html">Track model training in Jupyter notebooks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ds-tune.html">Tuning hyperparameters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ds-pipelines.html">Pipelines in Azure ML</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ds-deploy.html">Deploying a ML model</a></li>
 
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">ML Pipeline</span></p>
-<ul class="nav bd-sidenav">
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="ds-design.html">Designing a ML solution</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ds-train.html">Designing a ML model for training</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Designing a ML model for training</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ds-deployment.html">Designing a ML model deployment solution</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ds-register.html">Registering an MLflow model in Azure ML</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ds-ethics.html">Responsible AI</a></li>
@@ -288,7 +288,7 @@
       
       
       
-      <li><a href="https://github.com/hkjeldsberg/azure-de-ds/issues/new?title=Issue%20on%20page%20%2Fds-track.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/hkjeldsberg/azure-de-ds/issues/new?title=Issue%20on%20page%20%2Fds-train.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -318,7 +318,7 @@
       
       
       
-      <li><a href="_sources/ds-track.md" target="_blank"
+      <li><a href="_sources/ds-train.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -402,7 +402,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Track model training in Jupyter notebooks</h1>
+    <h1>Designing a ML model for training</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -412,8 +412,11 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-autologging">Using autologging</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-custom-logging">Using custom logging</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#selecting-a-ml-service-in-azure">Selecting a ML service in Azure</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#selecting-computing-resources">Selecting computing resources</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spark">Spark</a></li>
+</ul>
+</li>
 </ul>
             </nav>
         </div>
@@ -425,44 +428,80 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="track-model-training-in-jupyter-notebooks">
-<h1>Track model training in Jupyter notebooks<a class="headerlink" href="#track-model-training-in-jupyter-notebooks" title="Permalink to this heading">#</a></h1>
-<p>Tracking models can be done with MLFlow; MLflow is an open-source library for tracking and managing your machine
-learning experiments. In particular, MLflow Tracking is a component of MLflow that logs everything about the model
-you’re training, such as parameters, metrics, and artifacts.</p>
-<p>To start tracking a local notebook, configure MLflow to point to the Azure ML workspare by setting
-<code class="docutils literal notranslate"><span class="pre">mlflow.set_tracking_uri</span> <span class="pre">=</span> <span class="pre">&quot;MLFLOW-TRACKING-URI&quot;</span></code>.</p>
-<section id="using-autologging">
-<h2>Using autologging<a class="headerlink" href="#using-autologging" title="Permalink to this heading">#</a></h2>
-<p>MLflow supports automatic logging for popular machine learning libraries. If you’re using a library that is supported by
-autolog, then MLflow tells the framework you’re using to log all the metrics, parameters, artifacts, and models that the
-framework considers relevant.
-It is enabled by calling <code class="docutils literal notranslate"><span class="pre">autolog()</span></code>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">mlflow</span>
-
-<span class="n">mlflow</span><span class="o">.</span><span class="n">xgboost</span><span class="o">.</span><span class="n">autolog</span><span class="p">()</span>
-</pre></div>
-</div>
-<p>As soon as <code class="docutils literal notranslate"><span class="pre">mlflow.xgboost.autolog()</span></code> is called, MLflow will start a run within an experiment in Azure Machine Learning
-to start tracking the experiment’s run.</p>
-</section>
-<section id="using-custom-logging">
-<h2>Using custom logging<a class="headerlink" href="#using-custom-logging" title="Permalink to this heading">#</a></h2>
-<p>Alternatively, manually logging is possible. Common functions used with custom logging are:</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="designing-a-ml-model-for-training">
+<h1>Designing a ML model for training<a class="headerlink" href="#designing-a-ml-model-for-training" title="Permalink to this heading">#</a></h1>
+<p>For our ML model we need to consider which problem we want to solve:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">mlflow.log_param()</span></code>: Logs a single key-value parameter. Use this function for an input parameter you want to log.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">mlflow.log_metric()</span></code>: Logs a single key-value metric. Value must be a number. Use this function for any output you
-want
-to store with the run.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">mlflow.log_artifact()</span></code>: Logs a file. Use this function for any plot you want to log, save as image file first.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">mlflow.log_model()</span></code>: Logs a model. Use this function to create an MLflow model, which may include a custom signature,
-environment, and input examples.</p></li>
+<li><p>What should be the model’s output?</p></li>
+<li><p>What type of ML task can we use?</p></li>
+<li><p>Which metrics should we use?</p></li>
 </ul>
-<p>Custom logging is then enabled by:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mlflow</span><span class="o">.</span><span class="n">log_metric</span><span class="p">(</span><span class="s2">&quot;accuracy&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>here used to specify the <code class="docutils literal notranslate"><span class="pre">accuracy</span></code> metric.</p>
+<p>Common ML tasks are:</p>
+<ol class="arabic simple">
+<li><p>Classification</p></li>
+<li><p>Regression</p></li>
+<li><p>Time-series forecasting</p></li>
+<li><p>Computer vision</p></li>
+<li><p>NLP</p></li>
+</ol>
+<p><img alt="ML Tasks" src="_images/ml-tasks.png" /></p>
+<section id="selecting-a-ml-service-in-azure">
+<h2>Selecting a ML service in Azure<a class="headerlink" href="#selecting-a-ml-service-in-azure" title="Permalink to this heading">#</a></h2>
+<p>Commonly used services in Azure to train ML models are:</p>
+<ul class="simple">
+<li><p>Azure ML</p>
+<ul>
+<li><p>Can be managed with Python SDK</p></li>
+</ul>
+</li>
+<li><p>Azure Databricks</p>
+<ul>
+<li><p>Uses Spark</p></li>
+</ul>
+</li>
+<li><p>Azure Synapse Analytics</p>
+<ul>
+<li><p>Used for big data analytics, primarily for ingestion and transformation</p></li>
+</ul>
+</li>
+<li><p>Azure AI Services</p>
+<ul>
+<li><p>Collection of prebuilt ML models for common ML tasks</p></li>
+</ul>
+</li>
+</ul>
+<p>Some guidelines on selecting the <em>correct</em> service:</p>
+<ul class="simple">
+<li><p>Use Azure AI Services whenever one of the customizable prebuilt models suits your requirements, to save time and
+effort.</p></li>
+<li><p>Use Azure Synapse Analytics or Azure Databricks if you want to keep all data-related (data engineering and data
+science) projects within the same service.</p></li>
+<li><p>Use Azure Synapse Analytics or Azure Databricks if you need distributed compute for working with large datasets (
+datasets are large when you experience capacity constraints with standard compute). You’ll need to work with PySpark
+to use the distributed compute.</p></li>
+<li><p>Use Azure Machine Learning or Azure Databricks when you want full control over model training and management.</p></li>
+<li><p>Use Azure Machine Learning when Python is your preferred programming language.</p></li>
+<li><p>Use Azure Machine Learning when you want an intuitive user interface to manage your machine learning lifecycle.</p></li>
+</ul>
+</section>
+<section id="selecting-computing-resources">
+<h2>Selecting computing resources<a class="headerlink" href="#selecting-computing-resources" title="Permalink to this heading">#</a></h2>
+<p>For large amounts of tabular data, it may be beneficial to use <strong>GPUs</strong>, but come at a higher cost than <strong>CPUs</strong>. For
+smaller datasets, CPU will be sufficient and is cheap to use.
+Regarding virtual machine sizes, use one of the following:</p>
+<ul class="simple">
+<li><p>General purpuse: Balanced CPU-to-memory ratio. (testing/development, small datasets)</p></li>
+<li><p>Memory optimized: High memory-to-CPU ratio. (large datasets, in-memory analytics, notebooks)</p></li>
+</ul>
+<section id="spark">
+<h3>Spark<a class="headerlink" href="#spark" title="Permalink to this heading">#</a></h3>
+<p>Services like Azure Synapse Analytics and Azure Databricks offer Spark compute. Spark compute or clusters use the same
+sizing as virtual machines in Azure but distribute the workloads.</p>
+<p>A Spark cluster consists of a driver node and worker nodes. Your code will initially communicate with the driver node.
+The work is then distributed across the worker nodes. When you use a service that distributes the work, parts of the
+workload can be executed in parallel, reducing the processing time. Finally, the work is summarized and the driver node
+communicates the result back to you.</p>
+</section>
 </section>
 </section>
 
@@ -497,20 +536,20 @@ environment, and input examples.</p></li>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="ds-model.html"
+       href="ds-design.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Finding the “best” model by using AutoML</p>
+        <p class="prev-next-title">Designing a ML solution</p>
       </div>
     </a>
     <a class="right-next"
-       href="ds-tune.html"
+       href="ds-deployment.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Tuning hyperparameters</p>
+        <p class="prev-next-title">Designing a ML model deployment solution</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -530,8 +569,11 @@ environment, and input examples.</p></li>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-autologging">Using autologging</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-custom-logging">Using custom logging</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#selecting-a-ml-service-in-azure">Selecting a ML service in Azure</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#selecting-computing-resources">Selecting computing resources</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spark">Spark</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 
