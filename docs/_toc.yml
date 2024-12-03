@@ -31,3 +31,13 @@ parts:
       - file: ds-tune
       - file: ds-pipelines
       - file: ds-deploy
+  - caption: ML Pipeline
+    chapters:
+      - file: ds-design
+      - file: ds-train
+      - file: ds-deployment
+      - file: ds-register
+      - file: ds-ethics
+
+
+
